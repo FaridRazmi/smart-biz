@@ -62,7 +62,7 @@ export default function RecordRentForm({
         <input type="hidden" name="id" value={product.id} />
 
         <div className="sb-form-group">
-          <label className="sb-label">Tempoh Sewa</label>
+          <label className="sb-label">Rental Duration</label>
           <div className="row g-2">
             {DURATION_TYPES.map((type) => (
               <div className="col-6" key={type}>
@@ -100,7 +100,7 @@ export default function RecordRentForm({
           <div className="col-sm-6">
             <div className="sb-form-group">
               <label htmlFor="start_at" className="sb-label">
-                Tarikh &amp; Masa Mula
+                Start Date &amp; Time
               </label>
               <input
                 type="datetime-local"
@@ -117,7 +117,7 @@ export default function RecordRentForm({
           <div className="col-sm-6">
             <div className="sb-form-group">
               <label htmlFor="price" className="sb-label">
-                Harga Sewa (RM)
+                Rental Price (RM)
               </label>
               <input
                 type="number"
@@ -131,7 +131,7 @@ export default function RecordRentForm({
                 required
               />
               <div className="sb-input-hint">
-                Auto ikut tempoh. Ubah untuk bagi promo (cth 3.00).
+                Auto-filled by duration. Change it to give a promo (e.g. 3.00).
               </div>
             </div>
           </div>
@@ -139,20 +139,20 @@ export default function RecordRentForm({
 
         <div className="sb-form-group">
           <label htmlFor="promo_note" className="sb-label">
-            Nota Promo (pilihan)
+            Promo Note (optional)
           </label>
           <input
             type="text"
             name="promo_note"
             id="promo_note"
             className="sb-input"
-            placeholder="cth. Promo RM3 sehari"
+            placeholder="e.g. Promo RM3 per day"
           />
         </div>
 
         <div className="sb-form-group">
           <label htmlFor="customer_name" className="sb-label">
-            Nama Pelanggan
+            Customer Name
           </label>
           <input
             type="text"
@@ -160,38 +160,38 @@ export default function RecordRentForm({
             id="customer_name"
             className="sb-input"
             required
-            placeholder="cth. Ahmad"
+            placeholder="e.g. Ahmad"
           />
         </div>
 
         <div className="sb-form-group">
           <label htmlFor="customer_phone" className="sb-label">
-            No. Telefon (pilihan)
+            Phone Number (optional)
           </label>
           <input
             type="text"
             name="customer_phone"
             id="customer_phone"
             className="sb-input"
-            placeholder="cth. 0123456789"
+            placeholder="e.g. 0123456789"
           />
         </div>
 
         <div className="p-3 bg-light border rounded mb-4">
           <div className="d-flex justify-content-between align-items-center">
-            <span className="small fw-semibold text-dark">Jumlah Bayaran</span>
+            <span className="small fw-semibold text-dark">Total Payment</span>
             <span className="fs-4 fw-bold text-success tabular">
               RM {(validPrice ? price : tierPrice).toFixed(2)}
             </span>
           </div>
           {discount > 0 && (
             <div className="small text-muted mt-1">
-              Harga asal <span style={{ textDecoration: "line-through" }}>RM {tierPrice.toFixed(2)}</span>{" "}
-              · <span className="text-success fw-semibold">promo jimat RM {discount.toFixed(2)}</span>
+              Original price <span style={{ textDecoration: "line-through" }}>RM {tierPrice.toFixed(2)}</span>{" "}
+              · <span className="text-success fw-semibold">promo saves RM {discount.toFixed(2)}</span>
             </div>
           )}
           <div className="small text-muted mt-1">
-            Tamat: {validEnd ? formatDateTime(validEnd) : "-"}
+            Ends: {validEnd ? formatDateTime(validEnd) : "-"}
           </div>
         </div>
 
@@ -200,7 +200,7 @@ export default function RecordRentForm({
           disabled={pending}
           className="sb-btn sb-btn-primary w-100 sb-btn-lg"
         >
-          {pending ? "Memproses..." : "Mula Sewa"}
+          {pending ? "Processing..." : "Start Rental"}
         </button>
       </form>
     </>

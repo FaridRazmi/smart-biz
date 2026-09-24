@@ -26,12 +26,12 @@ export async function createRental(
 
   const durationType = String(formData.get("duration_type") ?? "");
   if (!isDurationType(durationType)) {
-    return { error: "Pilih tempoh sewa yang sah." };
+    return { error: "Choose a valid rental duration." };
   }
 
   const customerName = String(formData.get("customer_name") ?? "").trim();
   if (!customerName) {
-    return { error: "Nama pelanggan diperlukan." };
+    return { error: "Customer name is required." };
   }
   const customerPhone = String(formData.get("customer_phone") ?? "").trim();
 
@@ -41,7 +41,7 @@ export async function createRental(
   const endAt = rentalEndAt(startAt, durationType);
 
   if (accountExpiryStatus(product.accountExpiryDate, startAt) === "expired") {
-    return { error: "Akaun ini dah luput. Perbaharui tarikh luput sebelum sewa." };
+    return { error: "This account has expired. Renew its expiry date before renting." };
   }
 
   const conflicts = await prisma.rental.count({
@@ -56,7 +56,7 @@ export async function createRental(
   const slots = Math.max(product.quantity, 1);
   if (conflicts >= slots) {
     return {
-      error: "Tempoh ini bertindih dengan sewaan lain untuk item ini. Pilih masa lain.",
+      error: "This period overlaps another rental for this item. Pick a different time.",
     };
   }
 

@@ -16,16 +16,16 @@ export default function Error({
 
   return (
     <div className="py-5 text-center">
-      <h2 className="h5 mb-2">Gagal memuatkan halaman ini</h2>
+      <h2 className="h5 mb-2">Could not load this page</h2>
       <p className="text-muted small mb-3">
-        Cuba semula. Kalau masih gagal, kembali ke dashboard.
+        Try again. If it keeps failing, go back to the dashboard.
       </p>
       <div className="d-flex justify-content-center gap-2">
         <button type="button" className="sb-btn sb-btn-primary" onClick={() => reset()}>
-          Cuba Semula
+          Try Again
         </button>
         <Link href="/dashboard" className="sb-btn sb-btn-secondary">
-          Ke Dashboard
+          Go to Dashboard
         </Link>
       </div>
     </div>

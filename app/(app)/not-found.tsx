@@ -3,12 +3,12 @@ import Link from "next/link";
 export default function NotFound() {
   return (
     <div className="py-5 text-center">
-      <h2 className="h5 mb-2">Halaman tidak dijumpai</h2>
+      <h2 className="h5 mb-2">Page not found</h2>
       <p className="text-muted small mb-3">
-        Rekod ini tiada atau telah dipadam.
+        This record does not exist or was deleted.
       </p>
       <Link href="/dashboard" className="sb-btn sb-btn-primary">
-        Ke Dashboard
+        Go to Dashboard
       </Link>
     </div>
   );

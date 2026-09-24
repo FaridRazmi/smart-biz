@@ -186,26 +186,26 @@ export default async function ProductsPage({
                         <div className="fw-semibold text-dark">
                           {product.name}
                           {product.isRentable && (
-                            <span className="sb-badge sb-badge-neutral ms-2">Sewaan</span>
+                            <span className="sb-badge sb-badge-neutral ms-2">Rental</span>
                           )}
                         </div>
                         <span className="text-muted small">Item #{product.id}</span>
                         {product.isRentable && (
                           <span className="text-muted small d-block">
-                            3j {rm(product.rentalPrice3h)} · hari {rm(product.rentalPriceDay)} ·
-                            minggu {rm(product.rentalPriceWeek)} · bulan {rm(product.rentalPriceMonth)}
+                            3h {rm(product.rentalPrice3h)} · day {rm(product.rentalPriceDay)} ·
+                            week {rm(product.rentalPriceWeek)} · month {rm(product.rentalPriceMonth)}
                           </span>
                         )}
                         {product.isRentable && expiry !== "none" && (
                           <span className="d-block mt-1">
                             {expiry === "expired" ? (
-                              <span className="sb-badge sb-badge-out-of-stock">Akaun Luput</span>
+                              <span className="sb-badge sb-badge-out-of-stock">Account Expired</span>
                             ) : expiry === "expiring" ? (
                               <span className="sb-badge sb-badge-low-stock">
-                                Luput {daysUntil(product.accountExpiryDate ?? now, now)} hari
+                                Expires in {daysUntil(product.accountExpiryDate ?? now, now)} days
                               </span>
                             ) : (
-                              <span className="sb-badge sb-badge-in-stock">Akaun Aktif</span>
+                              <span className="sb-badge sb-badge-in-stock">Account Active</span>
                             )}
                           </span>
                         )}
@@ -214,11 +214,11 @@ export default async function ProductsPage({
                         {product.isRentable ? (
                           available ? (
                             <span className="sb-badge sb-badge-in-stock">
-                              <span className="sb-status-dot green" /> Tersedia
+                              <span className="sb-status-dot green" /> Available
                             </span>
                           ) : (
                             <span className="sb-badge sb-badge-low-stock">
-                              <span className="sb-status-dot amber" /> Disewa
+                              <span className="sb-status-dot amber" /> Rented
                             </span>
                           )
                         ) : product.quantity === 0 ? (
@@ -247,29 +247,29 @@ export default async function ProductsPage({
                               <button
                                 className="sb-btn sb-btn-secondary sb-btn-sm py-1 px-2 disabled text-muted"
                                 disabled
-                                title="Akaun dah luput"
+                                title="Account has expired"
                               >
-                                <span>Luput</span>
+                                <span>Expired</span>
                               </button>
                             ) : available ? (
                               <Link
                                 href={`/products/${product.id}/rent`}
                                 className="sb-btn sb-btn-primary sb-btn-sm py-1 px-2"
-                                title="Sewa item ini"
+                                title="Rent this item"
                               >
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                   <circle cx="9" cy="21" r="1" />
                                   <circle cx="20" cy="21" r="1" />
                                   <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
                                 </svg>
-                                <span>Sewa</span>
+                                <span>Rent</span>
                               </Link>
                             ) : (
                               <button
                                 className="sb-btn sb-btn-secondary sb-btn-sm py-1 px-2 disabled text-muted"
                                 disabled
                               >
-                                <span>Disewa</span>
+                                <span>Rented</span>
                               </button>
                             )
                           ) : product.quantity > 0 ? (

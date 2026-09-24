@@ -789,12 +789,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
         content: none;
     }
 
-    .sb-table:not(.sb-table-plain) td[data-label="Tindakan"] {
+    .sb-table:not(.sb-table-plain) td[data-label="Action"] {
         justify-content: flex-start;
         padding-top: 0.5rem;
     }
 
-    .sb-table:not(.sb-table-plain) td[data-label="Tindakan"]::before {
+    .sb-table:not(.sb-table-plain) td[data-label="Action"]::before {
         align-self: center;
     }
 

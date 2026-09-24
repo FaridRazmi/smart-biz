@@ -45,14 +45,14 @@ export async function getNotifications(userId: number): Promise<Notification[]> 
   if (expired > 0) {
     notifications.push({
       type: "danger",
-      message: `${expired} akaun sewa dah luput. Perbaharui sebelum boleh disewa.`,
+      message: `${expired} rental account(s) have expired. Renew before renting them out.`,
     });
   }
 
   if (expiring > 0) {
     notifications.push({
       type: "warning",
-      message: `${expiring} akaun sewa akan luput dalam ${EXPIRY_WARNING_DAYS} hari.`,
+      message: `${expiring} rental account(s) expire within ${EXPIRY_WARNING_DAYS} days.`,
     });
   }
 

@@ -95,7 +95,7 @@ export function Sidebar({ username, isStaff }: { username: string; isStaff: bool
               <polyline points="12 7 12 12 15.5 14" />
             </>,
           ),
-          "Sewaan",
+          "Rentals",
         )}
         {link(
           "/reports/monthly",
@@ -107,7 +107,7 @@ export function Sidebar({ username, isStaff }: { username: string; isStaff: bool
               <line x1="6" y1="20" x2="6" y2="14" />
             </>,
           ),
-          "Laporan",
+          "Reports",
         )}
 
         {isStaff && (
@@ -205,7 +205,7 @@ export function MobileNav() {
           <circle cx="12" cy="12" r="9" />
           <polyline points="12 7 12 12 15.5 14" />
         </svg>
-        <span>Sewa</span>
+        <span>Rentals</span>
       </Link>
       <Link
         href="/reports/monthly"
@@ -216,7 +216,7 @@ export function MobileNav() {
           <line x1="12" y1="20" x2="12" y2="4" />
           <line x1="6" y1="20" x2="6" y2="14" />
         </svg>
-        <span>Laporan</span>
+        <span>Reports</span>
       </Link>
     </nav>
   );

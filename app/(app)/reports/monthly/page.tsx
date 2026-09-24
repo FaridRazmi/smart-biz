@@ -5,7 +5,7 @@ import { rm, toNumber } from "@/lib/format";
 import { DURATION_LABELS, isDurationType } from "@/lib/rental";
 import PrintButton from "@/components/PrintButton";
 
-export const metadata = { title: "Resit Pendapatan Bulanan | ReidBiz" };
+export const metadata = { title: "Monthly Income Receipt | ReidBiz" };
 export const dynamic = "force-dynamic";
 
 function formatDateTime(date: Date) {
@@ -81,26 +81,26 @@ export default async function MonthlyReportPage({
       <div className="d-none d-print-block receipt-print">
         <div className="text-center mb-2">
           <div className="fw-bold" style={{ fontSize: "13px" }}>{user.username}&apos;s Shop</div>
-          <div>Resit Pendapatan | {monthLabel}</div>
-          <div className="text-muted">Dijana {formatDateTime(now)}</div>
+          <div>Income Receipt | {monthLabel}</div>
+          <div className="text-muted">Generated {formatDateTime(now)}</div>
         </div>
 
         <table className="mb-2">
           <tbody>
             <tr>
-              <td>Sewaan ({rentals.length})</td>
+              <td>Rentals ({rentals.length})</td>
               <td className="text-end">{rm(rentalRevenue)}</td>
             </tr>
             <tr>
-              <td>Jualan ({sales.length})</td>
+              <td>Sales ({sales.length})</td>
               <td className="text-end">{rm(salesRevenue)}</td>
             </tr>
             <tr>
-              <td>Diskaun Promo</td>
+              <td>Promo Discount</td>
               <td className="text-end">{rm(promoDiscount)}</td>
             </tr>
             <tr className="fw-bold" style={{ borderTop: "1px solid #000" }}>
-              <td>Jumlah Pendapatan</td>
+              <td>Total Income</td>
               <td className="text-end">{rm(totalRevenue)}</td>
             </tr>
           </tbody>
@@ -108,15 +108,15 @@ export default async function MonthlyReportPage({
 
         {rentals.length > 0 && (
           <>
-            <div className="fw-bold mt-2 mb-1">Butiran Sewaan</div>
+            <div className="fw-bold mt-2 mb-1">Rental Details</div>
             <table>
               <thead>
                 <tr style={{ borderBottom: "1px solid #000" }}>
-                  <th className="text-start">Tarikh</th>
+                  <th className="text-start">Date</th>
                   <th className="text-start">Item</th>
-                  <th className="text-start">Pelanggan</th>
-                  <th className="text-start">Tempoh</th>
-                  <th className="text-end">Harga</th>
+                  <th className="text-start">Customer</th>
+                  <th className="text-start">Duration</th>
+                  <th className="text-end">Price</th>
                 </tr>
               </thead>
               <tbody>
@@ -136,14 +136,14 @@ export default async function MonthlyReportPage({
 
         {sales.length > 0 && (
           <>
-            <div className="fw-bold mt-2 mb-1">Butiran Jualan</div>
+            <div className="fw-bold mt-2 mb-1">Sales Details</div>
             <table>
               <thead>
                 <tr style={{ borderBottom: "1px solid #000" }}>
-                  <th className="text-start">Tarikh</th>
+                  <th className="text-start">Date</th>
                   <th className="text-start">Item</th>
                   <th className="text-end">Qty</th>
-                  <th className="text-end">Jumlah</th>
+                  <th className="text-end">Amount</th>
                 </tr>
               </thead>
               <tbody>
@@ -160,13 +160,13 @@ export default async function MonthlyReportPage({
           </>
         )}
 
-        <div className="text-center mt-2">Terima kasih</div>
+        <div className="text-center mt-2">Thank you</div>
       </div>
 
       <div className="d-print-none">
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
         <div>
-          <h1 className="h3 mb-1">Resit Pendapatan Bulanan</h1>
+          <h1 className="h3 mb-1">Monthly Income Receipt</h1>
           <p className="text-muted small mb-0">
             {user.username}&apos;s Shop · {monthLabel}
           </p>
@@ -181,7 +181,7 @@ export default async function MonthlyReportPage({
               style={{ maxWidth: 180 }}
             />
             <button type="submit" className="sb-btn sb-btn-secondary">
-              Lihat
+              View
             </button>
           </form>
           <PrintButton />
@@ -192,13 +192,13 @@ export default async function MonthlyReportPage({
         <div className="sb-card-body p-4">
           <div className="d-flex flex-wrap justify-content-between gap-3 mb-4 pb-3 border-bottom">
             <div>
-              <div className="fw-bold text-dark fs-5">ReidBiz | Penyata Pendapatan</div>
+              <div className="fw-bold text-dark fs-5">ReidBiz | Income Statement</div>
               <div className="text-muted small">
-                Bulan: {monthLabel} · Dijana pada {formatDateTime(now)}
+                Month: {monthLabel} · Generated at {formatDateTime(now)}
               </div>
             </div>
             <div className="text-end">
-              <div className="sb-stat-label mb-0">Jumlah Pendapatan</div>
+              <div className="sb-stat-label mb-0">Total Income</div>
               <div className="sb-stat-value text-success tabular">{rm(totalRevenue)}</div>
             </div>
           </div>
@@ -206,23 +206,23 @@ export default async function MonthlyReportPage({
           <div className="row g-3">
             <div className="col-sm-4">
               <div className="p-3 border rounded h-100">
-                <div className="small text-muted">Pendapatan Sewaan</div>
+                <div className="small text-muted">Rental Income</div>
                 <div className="fw-bold text-dark tabular fs-5">{rm(rentalRevenue)}</div>
-                <div className="small text-muted">{rentals.length} transaksi sewa</div>
+                <div className="small text-muted">{rentals.length} rentals</div>
               </div>
             </div>
             <div className="col-sm-4">
               <div className="p-3 border rounded h-100">
-                <div className="small text-muted">Pendapatan Jualan</div>
+                <div className="small text-muted">Sales Income</div>
                 <div className="fw-bold text-dark tabular fs-5">{rm(salesRevenue)}</div>
-                <div className="small text-muted">{sales.length} transaksi jualan</div>
+                <div className="small text-muted">{sales.length} sales</div>
               </div>
             </div>
             <div className="col-sm-4">
               <div className="p-3 border rounded h-100">
-                <div className="small text-muted">Jumlah Diskaun Promo</div>
+                <div className="small text-muted">Total Promo Discount</div>
                 <div className="fw-bold text-dark tabular fs-5">{rm(promoDiscount)}</div>
-                <div className="small text-muted">Nilai promo diberi</div>
+                <div className="small text-muted">Promo value given</div>
               </div>
             </div>
           </div>
@@ -231,8 +231,8 @@ export default async function MonthlyReportPage({
 
       <div className="sb-card mb-4">
         <div className="sb-card-header">
-          <h2 className="sb-card-title">Butiran Sewaan</h2>
-          <span className="badge bg-dark text-white tabular">{rentals.length} rekod</span>
+          <h2 className="sb-card-title">Rental Details</h2>
+          <span className="badge bg-dark text-white tabular">{rentals.length} records</span>
         </div>
         <div className="sb-card-body p-0">
           {rentals.length > 0 ? (
@@ -240,11 +240,11 @@ export default async function MonthlyReportPage({
               <table className="sb-table sb-table-plain">
                 <thead>
                   <tr>
-                    <th>Tarikh</th>
+                    <th>Date</th>
                     <th>Item</th>
-                    <th>Pelanggan</th>
-                    <th>Tempoh</th>
-                    <th className="col-right">Harga</th>
+                    <th>Customer</th>
+                    <th>Duration</th>
+                    <th className="col-right">Price</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -278,7 +278,7 @@ export default async function MonthlyReportPage({
                 <tfoot>
                   <tr>
                     <td colSpan={4} className="fw-semibold text-dark">
-                      Jumlah Sewaan
+                      Total Rentals
                     </td>
                     <td className="col-right tabular fw-bold text-success">{rm(rentalRevenue)}</td>
                   </tr>
@@ -286,15 +286,15 @@ export default async function MonthlyReportPage({
               </table>
             </div>
           ) : (
-            <div className="p-4 text-center text-muted small">Tiada sewaan pada bulan ini.</div>
+            <div className="p-4 text-center text-muted small">No rentals this month.</div>
           )}
         </div>
       </div>
 
       <div className="sb-card">
         <div className="sb-card-header">
-          <h2 className="sb-card-title">Butiran Jualan</h2>
-          <span className="badge bg-dark text-white tabular">{sales.length} rekod</span>
+          <h2 className="sb-card-title">Sales Details</h2>
+          <span className="badge bg-dark text-white tabular">{sales.length} records</span>
         </div>
         <div className="sb-card-body p-0">
           {sales.length > 0 ? (
@@ -302,10 +302,10 @@ export default async function MonthlyReportPage({
               <table className="sb-table sb-table-plain">
                 <thead>
                   <tr>
-                    <th>Tarikh</th>
+                    <th>Date</th>
                     <th>Item</th>
-                    <th className="col-center">Kuantiti</th>
-                    <th className="col-right">Jumlah</th>
+                    <th className="col-center">Quantity</th>
+                    <th className="col-right">Amount</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -323,7 +323,7 @@ export default async function MonthlyReportPage({
                 <tfoot>
                   <tr>
                     <td colSpan={3} className="fw-semibold text-dark">
-                      Jumlah Jualan
+                      Total Sales
                     </td>
                     <td className="col-right tabular fw-bold text-success">{rm(salesRevenue)}</td>
                   </tr>
@@ -331,14 +331,14 @@ export default async function MonthlyReportPage({
               </table>
             </div>
           ) : (
-            <div className="p-4 text-center text-muted small">Tiada jualan pada bulan ini.</div>
+            <div className="p-4 text-center text-muted small">No sales this month.</div>
           )}
         </div>
       </div>
 
       <div className="text-center text-muted small mt-4 no-print">
         <Link href="/rentals" className="text-decoration-none text-muted">
-          ← Kembali ke Sewaan
+          ← Back to Rentals
         </Link>
       </div>
       </div>

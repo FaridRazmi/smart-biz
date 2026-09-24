@@ -119,7 +119,7 @@ export default function ProductForm({
               />
               <div className="sb-input-hint">
                 {rentable
-                  ? "Bilangan slot/akaun yang boleh disewa serentak."
+                  ? "Number of slots/accounts that can be rented at once."
                   : "Current physical count available on store shelves."}
               </div>
             </div>
@@ -135,11 +135,12 @@ export default function ProductForm({
                   onChange={(event) => setRentable(event.target.checked)}
                 />
                 <label className="form-check-label fw-semibold text-dark" htmlFor="is_rentable">
-                  Barang Sewaan (boleh disewa)
+                  Rental item (can be rented)
                 </label>
               </div>
               <div className="small text-muted">
-                Tandakan jika item ini disewakan (cth akaun cloud game). Harga ikut tempoh di bawah.
+                Tick if this item is rented out (e.g. a cloud gaming account). Prices are per
+                duration below.
               </div>
             </div>
 
@@ -148,7 +149,7 @@ export default function ProductForm({
                 <div className="col-sm-6">
                   <div className="sb-form-group">
                     <label htmlFor="rental_price_3h" className="sb-label">
-                      Harga 3 Jam (RM)
+                      3 Hours Price (RM)
                     </label>
                     <input
                       type="number"
@@ -165,7 +166,7 @@ export default function ProductForm({
                 <div className="col-sm-6">
                   <div className="sb-form-group">
                     <label htmlFor="rental_price_day" className="sb-label">
-                      Harga 1 Hari (RM)
+                      1 Day Price (RM)
                     </label>
                     <input
                       type="number"
@@ -182,7 +183,7 @@ export default function ProductForm({
                 <div className="col-sm-6">
                   <div className="sb-form-group">
                     <label htmlFor="rental_price_week" className="sb-label">
-                      Harga 1 Minggu (RM)
+                      1 Week Price (RM)
                     </label>
                     <input
                       type="number"
@@ -199,7 +200,7 @@ export default function ProductForm({
                 <div className="col-sm-6">
                   <div className="sb-form-group">
                     <label htmlFor="rental_price_month" className="sb-label">
-                      Harga 1 Bulan (RM)
+                      1 Month Price (RM)
                     </label>
                     <input
                       type="number"
@@ -216,7 +217,7 @@ export default function ProductForm({
                 <div className="col-12">
                   <div className="sb-form-group mb-0">
                     <label htmlFor="account_expiry" className="sb-label">
-                      Tarikh Luput Akaun
+                      Account Expiry Date
                     </label>
                     <input
                       type="date"
@@ -226,8 +227,8 @@ export default function ProductForm({
                       defaultValue={product?.accountExpiryDate ?? ""}
                     />
                     <div className="sb-input-hint">
-                      Tarikh langganan akaun ini tamat. Sistem amaran bila hampir luput dan
-                      sekat sewa selepas luput.
+                      The date this account&apos;s subscription ends. The system warns near
+                      expiry and blocks rentals after it lapses.
                     </div>
                   </div>
                 </div>
@@ -238,7 +239,7 @@ export default function ProductForm({
               <div className="col-sm-6">
                 <div className="sb-form-group">
                   <label htmlFor="buying_price" className="sb-label">
-                    {rentable ? "Harga Modal / Kos Akaun (RM)" : "Wholesale Cost Price (RM)"}
+                    {rentable ? "Capital Cost / Account Cost (RM)" : "Wholesale Cost Price (RM)"}
                   </label>
                   <input
                     type="number"
@@ -253,7 +254,7 @@ export default function ProductForm({
                   />
                   <div className="sb-input-hint">
                     {rentable
-                      ? "Kos anda beli/langgan akaun ini."
+                      ? "What you paid for this account."
                       : "What you paid your supplier per unit."}
                   </div>
                 </div>

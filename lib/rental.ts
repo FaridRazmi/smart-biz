@@ -2,10 +2,10 @@ export const DURATION_TYPES = ["3h", "day", "week", "month"] as const;
 export type DurationType = (typeof DURATION_TYPES)[number];
 
 export const DURATION_LABELS: Record<DurationType, string> = {
-  "3h": "3 Jam",
-  day: "1 Hari",
-  week: "1 Minggu",
-  month: "1 Bulan",
+  "3h": "3 Hours",
+  day: "1 Day",
+  week: "1 Week",
+  month: "1 Month",
 };
 
 const DURATION_HOURS: Record<DurationType, number> = {
@@ -63,14 +63,14 @@ export function rentalPrices(product: ProductPriceFields): Record<DurationType, 
 
 export function formatRemaining(endAt: Date, now: Date = new Date()) {
   const ms = endAt.getTime() - now.getTime();
-  if (ms <= 0) return "Tamat";
+  if (ms <= 0) return "Ended";
   const totalMinutes = Math.floor(ms / 60000);
   const days = Math.floor(totalMinutes / 1440);
   const hours = Math.floor((totalMinutes % 1440) / 60);
   const minutes = totalMinutes % 60;
-  if (days > 0) return `${days} hari ${hours} jam`;
-  if (hours > 0) return `${hours} jam ${minutes} min`;
-  return `${minutes} min`;
+  if (days > 0) return `${days}d ${hours}h`;
+  if (hours > 0) return `${hours}h ${minutes}m`;
+  return `${minutes}m`;
 }
 
 export const EXPIRY_WARNING_DAYS = 3;

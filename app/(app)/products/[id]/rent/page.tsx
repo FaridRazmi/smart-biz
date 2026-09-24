@@ -5,7 +5,7 @@ import { getSessionUser } from "@/lib/auth";
 import { rentalPrices, toLocalInputValue } from "@/lib/rental";
 import RecordRentForm from "@/components/RecordRentForm";
 
-export const metadata = { title: "Sewa Item | ReidBiz" };
+export const metadata = { title: "Rent Item | ReidBiz" };
 export const dynamic = "force-dynamic";
 
 export default async function RentProductPage({
@@ -45,15 +45,15 @@ export default async function RentProductPage({
       <div className="sb-card">
         <div className="sb-card-header">
           <div>
-            <h1 className="h5 mb-0">Sewa: {product.name}</h1>
+            <h1 className="h5 mb-0">Rent: {product.name}</h1>
             <span className="text-muted small">
-              Pilih tempoh dan simpan maklumat pelanggan
+              Choose a duration and save the customer details
             </span>
           </div>
           {available ? (
-            <span className="sb-badge sb-badge-in-stock">Tersedia</span>
+            <span className="sb-badge sb-badge-in-stock">Available</span>
           ) : (
-            <span className="sb-badge sb-badge-out-of-stock">Sedang Disewa</span>
+            <span className="sb-badge sb-badge-out-of-stock">Currently Rented</span>
           )}
         </div>
 
@@ -61,11 +61,11 @@ export default async function RentProductPage({
           {!available && (
             <div className="sb-alert sb-alert-warning mb-4">
               <span>
-                Item ini sedang disewa ({activeCount}/{slots} slot). Tamatkan sewa semasa
-                sebelum mula sewaan baru.
+                This item is currently rented ({activeCount}/{slots} slots). End the current
+                rental before starting a new one.
               </span>
               <Link href="/rentals" className="sb-btn sb-btn-secondary sb-btn-sm">
-                Lihat Sewaan
+                View Rentals
               </Link>
             </div>
           )}
