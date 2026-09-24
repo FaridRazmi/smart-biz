@@ -12,18 +12,34 @@ export type SessionUser = {
 };
 
 export async function getSessionUser(): Promise<SessionUser> {
-  const user = await prisma.user.upsert({
+  let user = await prisma.user.findUnique({
     where: { username: DEFAULT_USERNAME },
-    update: {},
-    create: {
-      username: DEFAULT_USERNAME,
-      email: "",
-      passwordHash: DEFAULT_PASSWORD_HASH,
-      isActive: true,
-      isStaff: true,
-      isSuperuser: true,
-    },
   });
+
+  if (!user) {
+    try {
+      user = await prisma.user.create({
+        data: {
+          username: DEFAULT_USERNAME,
+          email: "",
+          passwordHash: DEFAULT_PASSWORD_HASH,
+          isActive: true,
+          isStaff: true,
+          isSuperuser: true,
+        },
+      });
+    } catch {
+      user = await prisma.user.findUnique({
+        where: { username: DEFAULT_USERNAME },
+      });
+    }
+  }
+
+  if (!user) {
+    throw new Error(
+      "Could not create default user. Check that the database tables exist (run prisma/supabase_setup.sql).",
+    );
+  }
 
   return {
     id: user.id,
