@@ -219,7 +219,7 @@ export default function ProductForm({
               <div className="col-sm-6">
                 <div className="sb-form-group">
                   <label htmlFor="buying_price" className="sb-label">
-                    Wholesale Cost Price (RM)
+                    {rentable ? "Harga Modal / Kos Akaun (RM)" : "Wholesale Cost Price (RM)"}
                   </label>
                   <input
                     type="number"
@@ -232,45 +232,53 @@ export default function ProductForm({
                     defaultValue={product?.buyingPrice ?? ""}
                     onChange={(event) => setCost(Number(event.target.value) || 0)}
                   />
-                  <div className="sb-input-hint">What you paid your supplier per unit.</div>
+                  <div className="sb-input-hint">
+                    {rentable
+                      ? "Kos anda beli/langgan akaun ini."
+                      : "What you paid your supplier per unit."}
+                  </div>
                 </div>
               </div>
 
-              <div className="col-sm-6">
-                <div className="sb-form-group">
-                  <label htmlFor="selling_price" className="sb-label">
-                    Retail Selling Price (RM)
-                  </label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    name="selling_price"
-                    id="selling_price"
-                    className="sb-input tabular"
-                    required
-                    placeholder="0.00"
-                    defaultValue={product?.sellingPrice ?? ""}
-                    onChange={(event) => setSell(Number(event.target.value) || 0)}
-                  />
-                  <div className="sb-input-hint">What your retail customers pay.</div>
+              {!rentable && (
+                <div className="col-sm-6">
+                  <div className="sb-form-group">
+                    <label htmlFor="selling_price" className="sb-label">
+                      Retail Selling Price (RM)
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      name="selling_price"
+                      id="selling_price"
+                      className="sb-input tabular"
+                      required
+                      placeholder="0.00"
+                      defaultValue={product?.sellingPrice ?? ""}
+                      onChange={(event) => setSell(Number(event.target.value) || 0)}
+                    />
+                    <div className="sb-input-hint">What your retail customers pay.</div>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
-            <div className="p-3 bg-light border rounded mb-4">
-              <div className="d-flex justify-content-between align-items-center mb-1">
-                <span className="small fw-semibold text-dark">
-                  Estimated Gross Profit Margin
-                </span>
-                <span className={badgeClass}>
-                  {sell <= 0
-                    ? "RM 0.00 / unit"
-                    : `RM ${profit.toFixed(2)} (${marginPercent.toFixed(1)}%)`}
-                </span>
+            {!rentable && (
+              <div className="p-3 bg-light border rounded mb-4">
+                <div className="d-flex justify-content-between align-items-center mb-1">
+                  <span className="small fw-semibold text-dark">
+                    Estimated Gross Profit Margin
+                  </span>
+                  <span className={badgeClass}>
+                    {sell <= 0
+                      ? "RM 0.00 / unit"
+                      : `RM ${profit.toFixed(2)} (${marginPercent.toFixed(1)}%)`}
+                  </span>
+                </div>
+                <div className="small text-muted">{detail}</div>
               </div>
-              <div className="small text-muted">{detail}</div>
-            </div>
+            )}
 
             <div className="d-flex align-items-center justify-content-end gap-2 pt-2 border-top">
               <Link href="/products" className="sb-btn sb-btn-secondary">

@@ -187,6 +187,12 @@ export default async function ProductsPage({
                           )}
                         </div>
                         <span className="text-muted small">Item #{product.id}</span>
+                        {product.isRentable && (
+                          <span className="text-muted small d-block">
+                            3j {rm(product.rentalPrice3h)} · hari {rm(product.rentalPriceDay)} ·
+                            minggu {rm(product.rentalPriceWeek)} · bulan {rm(product.rentalPriceMonth)}
+                          </span>
+                        )}
                       </td>
                       <td>
                         {product.isRentable ? (
@@ -215,7 +221,9 @@ export default async function ProductsPage({
                       </td>
                       <td className="col-right tabular fw-bold text-dark fs-6">{product.quantity}</td>
                       <td className="col-right tabular text-muted">{rm(product.buyingPrice, { decimals: 2 })}</td>
-                      <td className="col-right tabular fw-bold text-dark">{rm(product.sellingPrice, { decimals: 2 })}</td>
+                      <td className="col-right tabular fw-bold text-dark">
+                        {product.isRentable ? "—" : rm(product.sellingPrice, { decimals: 2 })}
+                      </td>
                       <td className="col-right">
                         <div className="d-inline-flex align-items-center gap-1">
                           {product.isRentable ? (
