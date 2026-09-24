@@ -1,41 +1,34 @@
-import { cookies } from "next/headers";
-import bcrypt from "bcryptjs";
-import {
-  SESSION_COOKIE,
-  SESSION_MAX_AGE,
-  signSession,
-  verifySession,
-  type SessionUser,
-} from "./session";
+import { prisma } from "@/lib/prisma";
 
-export async function hashPassword(password: string) {
-  return bcrypt.hash(password, 10);
-}
+const DEFAULT_USERNAME = "owner";
+const DEFAULT_PASSWORD_HASH =
+  "$2b$10$72WdYspQUgMgzKrAW0Yle.17jeeJUXnuM0m1YbWY0.RnJ6HZF9sG2";
 
-export async function verifyPassword(password: string, hash: string) {
-  return bcrypt.compare(password, hash);
-}
+export type SessionUser = {
+  id: number;
+  username: string;
+  isStaff: boolean;
+  isSuperuser: boolean;
+};
 
-export async function startSession(user: SessionUser) {
-  const token = await signSession(user);
-  const store = await cookies();
-  store.set(SESSION_COOKIE, token, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-    maxAge: SESSION_MAX_AGE,
+export async function getSessionUser(): Promise<SessionUser> {
+  const user = await prisma.user.upsert({
+    where: { username: DEFAULT_USERNAME },
+    update: {},
+    create: {
+      username: DEFAULT_USERNAME,
+      email: "",
+      passwordHash: DEFAULT_PASSWORD_HASH,
+      isActive: true,
+      isStaff: true,
+      isSuperuser: true,
+    },
   });
-}
 
-export async function endSession() {
-  const store = await cookies();
-  store.delete(SESSION_COOKIE);
-}
-
-export async function getSessionUser(): Promise<SessionUser | null> {
-  const store = await cookies();
-  const token = store.get(SESSION_COOKIE)?.value;
-  if (!token) return null;
-  return verifySession(token);
+  return {
+    id: user.id,
+    username: user.username,
+    isStaff: user.isStaff,
+    isSuperuser: user.isSuperuser,
+  };
 }

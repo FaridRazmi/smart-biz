@@ -33,7 +33,7 @@ function formatDateTime(date: Date) {
 
 export default async function SalesHistoryPage() {
   const user = await getSessionUser();
-  if (!user) redirect("/login");
+  if (!user) redirect("/dashboard");
 
   const sales = await prisma.sale.findMany({
     where: { userId: user.id },

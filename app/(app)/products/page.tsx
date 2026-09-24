@@ -13,7 +13,7 @@ export default async function ProductsPage({
   searchParams: Promise<{ q?: string; status?: string }>;
 }) {
   const user = await getSessionUser();
-  if (!user) redirect("/login");
+  if (!user) redirect("/dashboard");
 
   const { q = "", status = "all" } = await searchParams;
   const query = q.trim();

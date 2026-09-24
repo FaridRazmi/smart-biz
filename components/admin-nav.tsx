@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
-import { logoutAction } from "@/app/actions/auth";
 
 function icon(children: ReactNode, viewBox = "0 0 24 24") {
   return (
@@ -92,29 +91,6 @@ export function AdminSidebar({ username }: { username: string }) {
           <div className="sb-user-name">{username}</div>
           <div className="sb-user-role">Superuser / Staff</div>
         </div>
-        <form method="POST" action={logoutAction} className="m-0">
-          <button
-            type="submit"
-            className="sb-btn sb-btn-secondary sb-btn-sm"
-            title="Log out"
-            aria-label="Log out"
-          >
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-              <polyline points="16 17 21 12 16 7" />
-              <line x1="21" y1="12" x2="9" y2="12" />
-            </svg>
-          </button>
-        </form>
       </div>
     </aside>
   );

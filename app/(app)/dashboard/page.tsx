@@ -24,7 +24,7 @@ function formatTime(date: Date) {
 
 export default async function DashboardPage() {
   const user = await getSessionUser();
-  if (!user) redirect("/login");
+  if (!user) redirect("/dashboard");
   const userId = user.id;
 
   const now = new Date();

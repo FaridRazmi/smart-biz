@@ -7,7 +7,7 @@ import { getSessionUser } from "@/lib/auth";
 
 async function requireUser() {
   const user = await getSessionUser();
-  if (!user) redirect("/login");
+  if (!user) redirect("/dashboard");
   return user;
 }
 

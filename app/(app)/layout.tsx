@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { getSessionUser } from "@/lib/auth";
@@ -7,7 +6,6 @@ import { MobileNav, Sidebar, Topbar } from "@/components/nav";
 
 export default async function AppLayout({ children }: { children: ReactNode }) {
   const user = await getSessionUser();
-  if (!user) redirect("/login");
 
   const notifications = await getNotifications(user.id);
   const isStaff = user.isStaff || user.isSuperuser;

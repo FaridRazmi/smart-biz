@@ -12,7 +12,7 @@ export async function recordSale(
   formData: FormData,
 ): Promise<SaleState> {
   const user = await getSessionUser();
-  if (!user) redirect("/login");
+  if (!user) redirect("/dashboard");
 
   const id = Number(formData.get("id"));
   const product = await prisma.product.findFirst({ where: { id, userId: user.id } });

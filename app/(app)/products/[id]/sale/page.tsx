@@ -30,7 +30,7 @@ export default async function RecordSalePage({
   params: Promise<{ id: string }>;
 }) {
   const user = await getSessionUser();
-  if (!user) redirect("/login");
+  if (!user) redirect("/dashboard");
 
   const { id } = await params;
   const product = await prisma.product.findFirst({

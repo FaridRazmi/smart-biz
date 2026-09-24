@@ -18,7 +18,7 @@ export default async function AdminUsersPage({
   searchParams: Promise<{ status?: string }>;
 }) {
   const user = await getSessionUser();
-  if (!user) redirect("/login");
+  if (!user) redirect("/dashboard");
   if (!(user.isStaff || user.isSuperuser)) redirect("/dashboard");
 
   const { status = "all" } = await searchParams;

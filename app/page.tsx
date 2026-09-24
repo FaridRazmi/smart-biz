@@ -1,14 +1,10 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { getSessionUser } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 export const metadata = { title: "SmartBiz — Sales & Inventory Ledger" };
 
-export default async function LandingPage() {
-  const user = await getSessionUser();
-  if (user) redirect("/dashboard");
+export default function LandingPage() {
 
   return (
     <>
@@ -142,8 +138,7 @@ export default async function LandingPage() {
           </Link>
 
           <div className="d-flex align-items-center gap-2">
-            <Link href="/login" className="sb-btn sb-btn-secondary sb-btn-sm">Log In</Link>
-            <Link href="/register" className="sb-btn sb-btn-primary sb-btn-sm">Get Started</Link>
+            <Link href="/dashboard" className="sb-btn sb-btn-primary sb-btn-sm">Open Dashboard</Link>
           </div>
         </div>
       </header>
@@ -164,12 +159,12 @@ export default async function LandingPage() {
         </p>
 
         <div className="d-flex flex-wrap justify-content-center gap-3 mb-5">
-          <Link href="/register" className="sb-btn sb-btn-primary sb-btn-lg">
-            Create Free Store Account
+          <Link href="/dashboard" className="sb-btn sb-btn-primary sb-btn-lg">
+            Open Dashboard
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
           </Link>
-          <Link href="/login" className="sb-btn sb-btn-secondary sb-btn-lg">
-            Sign In to Existing Shop
+          <Link href="/products" className="sb-btn sb-btn-secondary sb-btn-lg">
+            View Inventory
           </Link>
         </div>
 
@@ -354,8 +349,8 @@ export default async function LandingPage() {
           <div className="text-center mt-5 p-4 sb-card" style={{ background: "var(--sb-surface-muted)" }}>
             <h3 className="mb-2">Ready to organize your shop inventory?</h3>
             <p className="text-muted small mb-3">Takes less than 1 minute to setup your store.</p>
-            <Link href="/register" className="sb-btn sb-btn-primary">
-              Create Your Store Account
+            <Link href="/dashboard" className="sb-btn sb-btn-primary">
+              Open Dashboard
             </Link>
           </div>
         </div>
@@ -370,8 +365,8 @@ export default async function LandingPage() {
             <span>— Merchant Sales & Inventory Ledger</span>
           </div>
           <div>
-            <Link href="/login" className="text-decoration-none text-muted me-3">Login</Link>
-            <Link href="/register" className="text-decoration-none text-dark fw-semibold">Register Store</Link>
+            <Link href="/dashboard" className="text-decoration-none text-muted me-3">Dashboard</Link>
+            <Link href="/admin-dashboard" className="text-decoration-none text-dark fw-semibold">Admin Panel</Link>
           </div>
         </div>
       </footer>

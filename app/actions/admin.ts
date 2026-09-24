@@ -7,7 +7,7 @@ import { getSessionUser } from "@/lib/auth";
 
 export async function toggleUserStatus(formData: FormData) {
   const admin = await getSessionUser();
-  if (!admin || !(admin.isStaff || admin.isSuperuser)) redirect("/login");
+  if (!admin || !(admin.isStaff || admin.isSuperuser)) redirect("/dashboard");
 
   const id = Number(formData.get("id"));
   if (!id) return;
