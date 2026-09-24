@@ -283,9 +283,9 @@ export default async function DashboardPage() {
                     <tbody>
                       {topProducts.map((product) => (
                         <tr key={product.name}>
-                          <td className="fw-semibold text-dark">{product.name}</td>
-                          <td className="col-center tabular">{product.totalSold}</td>
-                          <td className="col-right tabular fw-bold text-dark">
+                          <td data-label="Product" className="fw-semibold text-dark">{product.name}</td>
+                          <td data-label="Units Sold" className="col-center tabular">{product.totalSold}</td>
+                          <td data-label="Total Revenue" className="col-right tabular fw-bold text-dark">
                             {rm(product.revenue)}
                           </td>
                         </tr>
@@ -331,12 +331,12 @@ export default async function DashboardPage() {
                     <tbody>
                       {recentSales.map((sale) => (
                         <tr key={sale.id}>
-                          <td className="fw-semibold text-dark">{sale.product.name}</td>
-                          <td className="text-muted small tabular">
+                          <td data-label="Item" className="fw-semibold text-dark">{sale.product.name}</td>
+                          <td data-label="Time" className="text-muted small tabular">
                             {formatTime(sale.createdAt)}
                           </td>
-                          <td className="col-center tabular">{sale.quantitySold}</td>
-                          <td className="col-right tabular fw-bold text-success">
+                          <td data-label="Qty" className="col-center tabular">{sale.quantitySold}</td>
+                          <td data-label="Amount" className="col-right tabular fw-bold text-success">
                             {rm(sale.totalPrice)}
                           </td>
                         </tr>

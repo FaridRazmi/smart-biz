@@ -182,7 +182,7 @@ export default async function ProductsPage({
                     const expiry = accountExpiryStatus(product.accountExpiryDate, now);
                     return (
                     <tr key={product.id}>
-                      <td>
+                      <td data-label="Product Item">
                         <div className="fw-semibold text-dark">
                           {product.name}
                           {product.isRentable && (
@@ -210,7 +210,7 @@ export default async function ProductsPage({
                           </span>
                         )}
                       </td>
-                      <td>
+                      <td data-label="Stock Status">
                         {product.isRentable ? (
                           available ? (
                             <span className="sb-badge sb-badge-in-stock">
@@ -235,12 +235,12 @@ export default async function ProductsPage({
                           </span>
                         )}
                       </td>
-                      <td className="col-right tabular fw-bold text-dark fs-6">{product.quantity}</td>
-                      <td className="col-right tabular text-muted">{rm(product.buyingPrice, { decimals: 2 })}</td>
-                      <td className="col-right tabular fw-bold text-dark">
+                      <td data-label="Units In Stock" className="col-right tabular fw-bold text-dark fs-6">{product.quantity}</td>
+                      <td data-label="Cost Price" className="col-right tabular text-muted">{rm(product.buyingPrice, { decimals: 2 })}</td>
+                      <td data-label="Selling Price" className="col-right tabular fw-bold text-dark">
                         {product.isRentable ? "-" : rm(product.sellingPrice, { decimals: 2 })}
                       </td>
-                      <td className="col-right">
+                      <td data-label="Actions" className="col-right">
                         <div className="d-inline-flex align-items-center gap-1">
                           {product.isRentable ? (
                             expiry === "expired" ? (

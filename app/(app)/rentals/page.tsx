@@ -106,14 +106,14 @@ export default async function RentalsPage() {
                 <tbody>
                   {active.map((rental) => (
                     <tr key={rental.id}>
-                      <td className="fw-semibold text-dark">{rental.product.name}</td>
-                      <td>
+                      <td data-label="Item" className="fw-semibold text-dark">{rental.product.name}</td>
+                      <td data-label="Pelanggan">
                         <div className="fw-semibold text-dark">{rental.customerName}</div>
                         {rental.customerPhone && (
                           <span className="text-muted small">{rental.customerPhone}</span>
                         )}
                       </td>
-                      <td>
+                      <td data-label="Tempoh">
                         <span className="sb-badge sb-badge-neutral">
                           {durationLabel(rental.durationType)}
                         </span>
@@ -121,14 +121,14 @@ export default async function RentalsPage() {
                           <span className="sb-badge sb-badge-low-stock ms-1">Promo</span>
                         )}
                       </td>
-                      <td className="text-muted small tabular">
+                      <td data-label="Mula" className="text-muted small tabular">
                         {formatDateTime(rental.startAt)}
                       </td>
-                      <td className="text-muted small tabular">{formatDateTime(rental.endAt)}</td>
-                      <td className="col-center tabular fw-semibold text-dark">
+                      <td data-label="Tamat" className="text-muted small tabular">{formatDateTime(rental.endAt)}</td>
+                      <td data-label="Baki" className="col-center tabular fw-semibold text-dark">
                         {formatRemaining(rental.endAt, now)}
                       </td>
-                      <td className="col-right tabular fw-bold text-success">
+                      <td data-label="Harga" className="col-right tabular fw-bold text-success">
                         {rm(rental.price)}
                         {rental.isPromo && rental.originalPrice != null && (
                           <span
@@ -139,7 +139,7 @@ export default async function RentalsPage() {
                           </span>
                         )}
                       </td>
-                      <td className="col-right">
+                      <td data-label="Tindakan" className="col-right">
                         <form method="POST" action={endRental} className="m-0">
                           <input type="hidden" name="id" value={rental.id} />
                           <button type="submit" className="sb-btn sb-btn-secondary sb-btn-sm py-1 px-2">
@@ -186,9 +186,9 @@ export default async function RentalsPage() {
                 <tbody>
                   {past.map((rental) => (
                     <tr key={rental.id}>
-                      <td className="fw-semibold text-dark">{rental.product.name}</td>
-                      <td className="text-muted">{rental.customerName}</td>
-                      <td>
+                      <td data-label="Item" className="fw-semibold text-dark">{rental.product.name}</td>
+                      <td data-label="Pelanggan" className="text-muted">{rental.customerName}</td>
+                      <td data-label="Tempoh">
                         <span className="sb-badge sb-badge-neutral">
                           {durationLabel(rental.durationType)}
                         </span>
@@ -196,11 +196,11 @@ export default async function RentalsPage() {
                           <span className="sb-badge sb-badge-low-stock ms-1">Promo</span>
                         )}
                       </td>
-                      <td className="text-muted small tabular">
+                      <td data-label="Mula" className="text-muted small tabular">
                         {formatDateTime(rental.startAt)}
                       </td>
-                      <td className="text-muted small tabular">{formatDateTime(rental.endAt)}</td>
-                      <td className="col-right tabular fw-bold text-dark">
+                      <td data-label="Tamat" className="text-muted small tabular">{formatDateTime(rental.endAt)}</td>
+                      <td data-label="Harga" className="col-right tabular fw-bold text-dark">
                         {rm(rental.price)}
                         {rental.isPromo && rental.originalPrice != null && (
                           <span
@@ -211,7 +211,7 @@ export default async function RentalsPage() {
                           </span>
                         )}
                       </td>
-                      <td className="col-right">
+                      <td data-label="Tindakan" className="col-right">
                         <form method="POST" action={deleteRental} className="m-0">
                           <input type="hidden" name="id" value={rental.id} />
                           <button

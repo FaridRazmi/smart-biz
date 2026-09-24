@@ -127,23 +127,23 @@ export default async function SalesHistoryPage() {
                         : toNumber(sale.totalPrice);
                     return (
                       <tr key={sale.id}>
-                        <td className="tabular fw-bold text-dark">#SL-{sale.id}</td>
-                        <td className="text-muted tabular small">
+                        <td data-label="Receipt #" className="tabular fw-bold text-dark">#SL-{sale.id}</td>
+                        <td data-label="Date & Time" className="text-muted tabular small">
                           {formatDateTime(sale.createdAt)}
                         </td>
-                        <td>
+                        <td data-label="Product Item">
                           <span className="fw-semibold text-dark">{sale.product.name}</span>
                         </td>
-                        <td className="col-right tabular text-muted">
+                        <td data-label="Unit Price" className="col-right tabular text-muted">
                           {rm(unitPrice, { decimals: 2 })}
                         </td>
-                        <td className="col-center tabular fw-semibold text-dark">
+                        <td data-label="Quantity" className="col-center tabular fw-semibold text-dark">
                           {sale.quantitySold}
                         </td>
-                        <td className="col-right tabular fw-bold text-dark fs-6">
+                        <td data-label="Total Amount" className="col-right tabular fw-bold text-dark fs-6">
                           {rm(sale.totalPrice)}
                         </td>
-                        <td className="col-center">
+                        <td data-label="Status" className="col-center">
                           <span className="sb-badge sb-badge-in-stock">Paid</span>
                         </td>
                       </tr>

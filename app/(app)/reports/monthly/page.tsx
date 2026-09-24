@@ -237,7 +237,7 @@ export default async function MonthlyReportPage({
         <div className="sb-card-body p-0">
           {rentals.length > 0 ? (
             <div className="sb-table-responsive">
-              <table className="sb-table">
+              <table className="sb-table sb-table-plain">
                 <thead>
                   <tr>
                     <th>Tarikh</th>
@@ -299,7 +299,7 @@ export default async function MonthlyReportPage({
         <div className="sb-card-body p-0">
           {sales.length > 0 ? (
             <div className="sb-table-responsive">
-              <table className="sb-table">
+              <table className="sb-table sb-table-plain">
                 <thead>
                   <tr>
                     <th>Tarikh</th>

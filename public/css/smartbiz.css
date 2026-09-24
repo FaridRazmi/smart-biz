@@ -10,7 +10,7 @@
     
     --sb-text-primary: #0f172a;
     --sb-text-secondary: #334155;
-    --sb-text-muted: #64748b;
+    --sb-text-muted: #5b6675;
     --sb-text-inverse: #ffffff;
 
     --sb-primary: #0f172a;
@@ -323,7 +323,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .sb-stat-value {
-    font-size: 1.75rem;
+    font-size: clamp(1.35rem, 4.5vw, 1.75rem);
     font-weight: 700;
     letter-spacing: -0.03em;
     color: var(--sb-text-primary);
@@ -659,13 +659,17 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
     .sb-sidebar {
         display: none;
     }
+
+    .sb-topbar {
+        display: none;
+    }
     
     .sb-main {
         margin-left: 0;
     }
     
     .sb-content {
-        padding: 1.25rem 1rem 5rem;
+        padding: 1.25rem 1rem calc(5rem + env(safe-area-inset-bottom));
     }
 
     .sb-mobile-nav-toggle {
@@ -678,7 +682,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
         bottom: 0;
         left: 0;
         right: 0;
-        height: 60px;
+        height: calc(60px + env(safe-area-inset-bottom));
+        padding-bottom: env(safe-area-inset-bottom);
         background: var(--sb-surface);
         border-top: 1px solid var(--sb-border);
         display: flex;
@@ -719,5 +724,81 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
     }
     .sb-mobile-nav-toggle {
         display: none !important;
+    }
+}
+
+/* Accessible semantic text colors (WCAG AA on light surfaces) */
+.text-success { color: #047857 !important; }
+.text-warning { color: #92400e !important; }
+.text-danger { color: #b91c1c !important; }
+
+/* Small-screen: tables become stacked cards, larger tap targets.
+   Cells carry data-label="..." so each value keeps its column meaning. */
+@media (max-width: 640px) {
+    .sb-btn {
+        min-height: 44px;
+    }
+
+    .sb-btn-sm {
+        min-height: 44px;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+
+    .sb-table:not(.sb-table-plain) thead {
+        display: none;
+    }
+
+    .sb-table:not(.sb-table-plain),
+    .sb-table:not(.sb-table-plain) tbody,
+    .sb-table:not(.sb-table-plain) tr,
+    .sb-table:not(.sb-table-plain) td {
+        display: block;
+        width: 100%;
+    }
+
+    .sb-table:not(.sb-table-plain) tr {
+        border: 1px solid var(--sb-border);
+        border-radius: var(--sb-radius-lg);
+        padding: 0.625rem 0.875rem;
+        margin-bottom: 0.75rem;
+        background: var(--sb-surface);
+    }
+
+    .sb-table:not(.sb-table-plain) td {
+        border: none;
+        padding: 0.3rem 0;
+        text-align: left !important;
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .sb-table:not(.sb-table-plain) td::before {
+        content: attr(data-label);
+        flex: 0 0 auto;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--sb-text-muted);
+    }
+
+    .sb-table:not(.sb-table-plain) td:not([data-label])::before {
+        content: none;
+    }
+
+    .sb-table:not(.sb-table-plain) td[data-label="Tindakan"] {
+        justify-content: flex-start;
+        padding-top: 0.5rem;
+    }
+
+    .sb-table:not(.sb-table-plain) td[data-label="Tindakan"]::before {
+        align-self: center;
+    }
+
+    .sb-card-body.p-0 .sb-table {
+        padding: 0 0.875rem;
     }
 }
