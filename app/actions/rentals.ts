@@ -56,6 +56,13 @@ export async function createRental(
     };
   }
 
+  const tierPrice = priceForProduct(product, durationType);
+  const priceRaw = String(formData.get("price") ?? "").trim();
+  const parsedPrice = priceRaw ? Number(priceRaw) : tierPrice;
+  const price = Number.isFinite(parsedPrice) && parsedPrice >= 0 ? parsedPrice : tierPrice;
+  const promoNote = String(formData.get("promo_note") ?? "").trim();
+  const isPromo = price < tierPrice;
+
   await prisma.rental.create({
     data: {
       userId: user.id,
@@ -65,7 +72,10 @@ export async function createRental(
       durationType,
       startAt,
       endAt,
-      price: priceForProduct(product, durationType),
+      price,
+      originalPrice: tierPrice,
+      isPromo,
+      promoNote,
       status: endAt.getTime() > Date.now() ? "active" : "completed",
     },
   });

@@ -5,7 +5,6 @@ import { createRental, type RentState } from "@/app/actions/rentals";
 import {
   DURATION_LABELS,
   DURATION_TYPES,
-  durationHours,
   rentalEndAt,
   type DurationType,
 } from "@/lib/rental";
@@ -36,10 +35,20 @@ export default function RecordRentForm({
   const [state, formAction, pending] = useActionState(createRental, initialState);
   const [duration, setDuration] = useState<DurationType>("3h");
   const [start, setStart] = useState(defaultStartAt);
-  const price = product.prices[duration];
+  const [priceInput, setPriceInput] = useState(product.prices["3h"].toFixed(2));
+
+  const tierPrice = product.prices[duration];
+  const price = Number(priceInput);
+  const validPrice = Number.isFinite(price) && price >= 0;
+  const discount = validPrice ? tierPrice - price : 0;
 
   const endAt = start ? rentalEndAt(new Date(start), duration) : null;
   const validEnd = endAt && !Number.isNaN(endAt.getTime()) ? endAt : null;
+
+  function changeDuration(type: DurationType) {
+    setDuration(type);
+    setPriceInput(product.prices[type].toFixed(2));
+  }
 
   return (
     <>
@@ -71,7 +80,7 @@ export default function RecordRentForm({
                       name="duration_type"
                       value={type}
                       checked={duration === type}
-                      onChange={() => setDuration(type)}
+                      onChange={() => changeDuration(type)}
                       className="form-check-input mt-0"
                     />
                     <div>
@@ -87,22 +96,58 @@ export default function RecordRentForm({
           </div>
         </div>
 
+        <div className="row g-3">
+          <div className="col-sm-6">
+            <div className="sb-form-group">
+              <label htmlFor="start_at" className="sb-label">
+                Tarikh &amp; Masa Mula
+              </label>
+              <input
+                type="datetime-local"
+                name="start_at"
+                id="start_at"
+                className="sb-input tabular"
+                value={start}
+                onChange={(event) => setStart(event.target.value)}
+                required
+              />
+            </div>
+          </div>
+
+          <div className="col-sm-6">
+            <div className="sb-form-group">
+              <label htmlFor="price" className="sb-label">
+                Harga Sewa (RM)
+              </label>
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                name="price"
+                id="price"
+                className="sb-input tabular"
+                value={priceInput}
+                onChange={(event) => setPriceInput(event.target.value)}
+                required
+              />
+              <div className="sb-input-hint">
+                Auto ikut tempoh. Ubah untuk bagi promo (cth 3.00).
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="sb-form-group">
-          <label htmlFor="start_at" className="sb-label">
-            Tarikh &amp; Masa Mula
+          <label htmlFor="promo_note" className="sb-label">
+            Nota Promo (pilihan)
           </label>
           <input
-            type="datetime-local"
-            name="start_at"
-            id="start_at"
-            className="sb-input tabular"
-            value={start}
-            onChange={(event) => setStart(event.target.value)}
-            required
+            type="text"
+            name="promo_note"
+            id="promo_note"
+            className="sb-input"
+            placeholder="cth. Promo RM3 sehari"
           />
-          <div className="sb-input-hint">
-            Untuk rekod penyewa lepas, pilih tarikh &amp; masa dahulu.
-          </div>
         </div>
 
         <div className="sb-form-group">
@@ -135,8 +180,16 @@ export default function RecordRentForm({
         <div className="p-3 bg-light border rounded mb-4">
           <div className="d-flex justify-content-between align-items-center">
             <span className="small fw-semibold text-dark">Jumlah Bayaran</span>
-            <span className="fs-4 fw-bold text-success tabular">RM {price.toFixed(2)}</span>
+            <span className="fs-4 fw-bold text-success tabular">
+              RM {(validPrice ? price : tierPrice).toFixed(2)}
+            </span>
           </div>
+          {discount > 0 && (
+            <div className="small text-muted mt-1">
+              Harga asal <span style={{ textDecoration: "line-through" }}>RM {tierPrice.toFixed(2)}</span>{" "}
+              · <span className="text-success fw-semibold">promo jimat RM {discount.toFixed(2)}</span>
+            </div>
+          )}
           <div className="small text-muted mt-1">
             Tamat: {validEnd ? formatDateTime(validEnd) : "-"}
           </div>

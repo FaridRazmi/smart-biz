@@ -18,10 +18,19 @@ CREATE TABLE IF NOT EXISTS "Rental" (
     "startAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "endAt" TIMESTAMP(3) NOT NULL,
     "price" DECIMAL(10,2) NOT NULL,
+    "originalPrice" DECIMAL(10,2),
+    "isPromo" BOOLEAN NOT NULL DEFAULT false,
+    "promoNote" TEXT NOT NULL DEFAULT '',
     "status" TEXT NOT NULL DEFAULT 'active',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT "Rental_pkey" PRIMARY KEY ("id")
 );
+
+-- Promo columns for databases created before this migration
+ALTER TABLE "Rental"
+    ADD COLUMN IF NOT EXISTS "originalPrice" DECIMAL(10,2),
+    ADD COLUMN IF NOT EXISTS "isPromo" BOOLEAN NOT NULL DEFAULT false,
+    ADD COLUMN IF NOT EXISTS "promoNote" TEXT NOT NULL DEFAULT '';
 
 CREATE INDEX IF NOT EXISTS "Rental_userId_idx" ON "Rental"("userId");
 CREATE INDEX IF NOT EXISTS "Rental_productId_idx" ON "Rental"("productId");

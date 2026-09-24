@@ -53,6 +53,9 @@ model Rental {
   startAt       DateTime @default(now())
   endAt         DateTime
   price         Decimal  @db.Decimal(10, 2)
+  originalPrice Decimal? @db.Decimal(10, 2)
+  isPromo       Boolean  @default(false)
+  promoNote     String   @default("")
   status        String   @default("active")
   createdAt     DateTime @default(now())
 

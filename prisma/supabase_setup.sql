@@ -42,6 +42,9 @@ CREATE TABLE IF NOT EXISTS "Rental" (
     "startAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "endAt" TIMESTAMP(3) NOT NULL,
     "price" DECIMAL(10,2) NOT NULL,
+    "originalPrice" DECIMAL(10,2),
+    "isPromo" BOOLEAN NOT NULL DEFAULT false,
+    "promoNote" TEXT NOT NULL DEFAULT '',
     "status" TEXT NOT NULL DEFAULT 'active',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT "Rental_pkey" PRIMARY KEY ("id")

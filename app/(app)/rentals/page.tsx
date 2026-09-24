@@ -117,6 +117,9 @@ export default async function RentalsPage() {
                         <span className="sb-badge sb-badge-neutral">
                           {durationLabel(rental.durationType)}
                         </span>
+                        {rental.isPromo && (
+                          <span className="sb-badge sb-badge-low-stock ms-1">Promo</span>
+                        )}
                       </td>
                       <td className="text-muted small tabular">
                         {formatDateTime(rental.startAt)}
@@ -127,6 +130,14 @@ export default async function RentalsPage() {
                       </td>
                       <td className="col-right tabular fw-bold text-success">
                         {rm(rental.price)}
+                        {rental.isPromo && rental.originalPrice != null && (
+                          <span
+                            className="text-muted small d-block"
+                            style={{ textDecoration: "line-through" }}
+                          >
+                            {rm(rental.originalPrice)}
+                          </span>
+                        )}
                       </td>
                       <td className="col-right">
                         <form method="POST" action={endRental} className="m-0">
@@ -180,12 +191,25 @@ export default async function RentalsPage() {
                         <span className="sb-badge sb-badge-neutral">
                           {durationLabel(rental.durationType)}
                         </span>
+                        {rental.isPromo && (
+                          <span className="sb-badge sb-badge-low-stock ms-1">Promo</span>
+                        )}
                       </td>
                       <td className="text-muted small tabular">
                         {formatDateTime(rental.startAt)}
                       </td>
                       <td className="text-muted small tabular">{formatDateTime(rental.endAt)}</td>
-                      <td className="col-right tabular fw-bold text-dark">{rm(rental.price)}</td>
+                      <td className="col-right tabular fw-bold text-dark">
+                        {rm(rental.price)}
+                        {rental.isPromo && rental.originalPrice != null && (
+                          <span
+                            className="text-muted small d-block"
+                            style={{ textDecoration: "line-through" }}
+                          >
+                            {rm(rental.originalPrice)}
+                          </span>
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
