@@ -71,19 +71,21 @@ export default async function MonthlyReportPage({
           .sb-main { margin-left: 0 !important; }
           .sb-content { padding: 0 !important; max-width: 100% !important; }
           body { background: #fff !important; }
-          .receipt-print { max-width: 260px; margin: 0 auto; font-size: 11px; line-height: 1.35; }
-          .receipt-print table { border-collapse: collapse; }
-          .receipt-print table td { padding: 2px 0; }
+          .receipt-print { max-width: 520px; margin: 0 auto; font-size: 10px; line-height: 1.3; color: #000; }
+          .receipt-print table { border-collapse: collapse; width: 100%; }
+          .receipt-print table th, .receipt-print table td { padding: 1px 3px; font-size: 10px; }
+          .receipt-print table th { font-weight: 600; }
         }
       `}</style>
 
       <div className="d-none d-print-block receipt-print">
         <div className="text-center mb-2">
-          <div className="fw-bold">{user.username}&apos;s Shop</div>
+          <div className="fw-bold" style={{ fontSize: "13px" }}>{user.username}&apos;s Shop</div>
           <div>Resit Pendapatan — {monthLabel}</div>
           <div className="text-muted">Dijana {formatDateTime(now)}</div>
         </div>
-        <table className="w-100">
+
+        <table className="mb-2">
           <tbody>
             <tr>
               <td>Sewaan ({rentals.length})</td>
@@ -97,12 +99,67 @@ export default async function MonthlyReportPage({
               <td>Diskaun Promo</td>
               <td className="text-end">{rm(promoDiscount)}</td>
             </tr>
-            <tr className="fw-bold">
+            <tr className="fw-bold" style={{ borderTop: "1px solid #000" }}>
               <td>Jumlah Pendapatan</td>
               <td className="text-end">{rm(totalRevenue)}</td>
             </tr>
           </tbody>
         </table>
+
+        {rentals.length > 0 && (
+          <>
+            <div className="fw-bold mt-2 mb-1">Butiran Sewaan</div>
+            <table>
+              <thead>
+                <tr style={{ borderBottom: "1px solid #000" }}>
+                  <th className="text-start">Tarikh</th>
+                  <th className="text-start">Item</th>
+                  <th className="text-start">Pelanggan</th>
+                  <th className="text-start">Tempoh</th>
+                  <th className="text-end">Harga</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rentals.map((rental) => (
+                  <tr key={rental.id}>
+                    <td>{formatDateTime(rental.startAt)}</td>
+                    <td>{rental.product.name}</td>
+                    <td>{rental.customerName}</td>
+                    <td>{durationLabel(rental.durationType)}</td>
+                    <td className="text-end">{rm(rental.price)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
+        )}
+
+        {sales.length > 0 && (
+          <>
+            <div className="fw-bold mt-2 mb-1">Butiran Jualan</div>
+            <table>
+              <thead>
+                <tr style={{ borderBottom: "1px solid #000" }}>
+                  <th className="text-start">Tarikh</th>
+                  <th className="text-start">Item</th>
+                  <th className="text-end">Qty</th>
+                  <th className="text-end">Jumlah</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sales.map((sale) => (
+                  <tr key={sale.id}>
+                    <td>{formatDateTime(sale.createdAt)}</td>
+                    <td>{sale.product.name}</td>
+                    <td className="text-end">{sale.quantitySold}</td>
+                    <td className="text-end">{rm(sale.totalPrice)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
+        )}
+
         <div className="text-center mt-2">— Terima kasih —</div>
       </div>
 
