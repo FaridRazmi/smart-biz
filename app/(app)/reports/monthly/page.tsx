@@ -66,14 +66,47 @@ export default async function MonthlyReportPage({
     <>
       <style>{`
         @media print {
+          @page { margin: 8mm; }
           .sb-sidebar, .sb-topbar, .sb-mobile-bottom-bar, .no-print { display: none !important; }
           .sb-main { margin-left: 0 !important; }
           .sb-content { padding: 0 !important; max-width: 100% !important; }
-          .sb-card { box-shadow: none !important; border-color: #cbd5e1 !important; }
           body { background: #fff !important; }
+          .receipt-print { max-width: 260px; margin: 0 auto; font-size: 11px; line-height: 1.35; }
+          .receipt-print table { border-collapse: collapse; }
+          .receipt-print table td { padding: 2px 0; }
         }
       `}</style>
 
+      <div className="d-none d-print-block receipt-print">
+        <div className="text-center mb-2">
+          <div className="fw-bold">{user.username}&apos;s Shop</div>
+          <div>Resit Pendapatan — {monthLabel}</div>
+          <div className="text-muted">Dijana {formatDateTime(now)}</div>
+        </div>
+        <table className="w-100">
+          <tbody>
+            <tr>
+              <td>Sewaan ({rentals.length})</td>
+              <td className="text-end">{rm(rentalRevenue)}</td>
+            </tr>
+            <tr>
+              <td>Jualan ({sales.length})</td>
+              <td className="text-end">{rm(salesRevenue)}</td>
+            </tr>
+            <tr>
+              <td>Diskaun Promo</td>
+              <td className="text-end">{rm(promoDiscount)}</td>
+            </tr>
+            <tr className="fw-bold">
+              <td>Jumlah Pendapatan</td>
+              <td className="text-end">{rm(totalRevenue)}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div className="text-center mt-2">— Terima kasih —</div>
+      </div>
+
+      <div className="d-print-none">
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-4">
         <div>
           <h1 className="h3 mb-1">Resit Pendapatan Bulanan</h1>
@@ -250,6 +283,7 @@ export default async function MonthlyReportPage({
         <Link href="/rentals" className="text-decoration-none text-muted">
           ← Kembali ke Sewaan
         </Link>
+      </div>
       </div>
     </>
   );
