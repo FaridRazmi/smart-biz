@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  username     String    @unique
+  email        String    @default("")
+  passwordHash String
+  isActive     Boolean   @default(true)
+  isStaff      Boolean   @default(false)
+  isSuperuser  Boolean   @default(false)
+  dateJoined   DateTime  @default(now())
+  products     Product[]
+  sales        Sale[]
+}
+
+model Product {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name         String
+  quantity     Int      @default(0)
+  buyingPrice  Decimal  @db.Decimal(10, 2)
+  sellingPrice Decimal  @db.Decimal(10, 2)
+  createdAt    DateTime @default(now())
+  sales        Sale[]
+}
+
+model Sale {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId    Int
+  product      Product  @relation(fields: [productId], references: [id], onDelete: Restrict)
+  quantitySold Int
+  totalPrice   Decimal  @db.Decimal(10, 2)
+  createdAt    DateTime @default(now())
+}
