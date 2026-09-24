@@ -127,6 +127,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
     font-weight: 700;
     font-size: 0.95rem;
     letter-spacing: -0.04em;
+    flex-shrink: 0;
+}
+
+.sb-brand-logo {
+    object-fit: cover;
+    background: var(--sb-surface);
 }
 
 .sb-brand-title {
