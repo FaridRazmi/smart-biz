@@ -47,7 +47,7 @@
                 <div class="row g-3">
                     <div class="col-sm-6">
                         <div class="sb-form-group">
-                            <label for="buying_price" class="sb-label">Wholesale Cost Price (KES)</label>
+                            <label for="buying_price" class="sb-label">Wholesale Cost Price (RM)</label>
                             <input type="number" step="0.01" min="0" name="buying_price" id="buying_price" class="sb-input tabular" placeholder="0.00" value="{{ product.buying_price|default:'' }}">
                             <div class="sb-input-hint">What you paid your supplier per unit.</div>
                         </div>
@@ -55,7 +55,7 @@
 
                     <div class="col-sm-6">
                         <div class="sb-form-group">
-                            <label for="selling_price" class="sb-label">Retail Selling Price (KES)</label>
+                            <label for="selling_price" class="sb-label">Retail Selling Price (RM)</label>
                             <input type="number" step="0.01" min="0" name="selling_price" id="selling_price" class="sb-input tabular" required placeholder="0.00" value="{{ product.selling_price|default:'' }}">
                             <div class="sb-input-hint">What your retail customers pay.</div>
                         </div>
@@ -66,7 +66,7 @@
                 <div class="p-3 bg-light border rounded mb-4" id="marginEstimator">
                     <div class="d-flex justify-content-between align-items-center mb-1">
                         <span class="small fw-semibold text-dark">Estimated Gross Profit Margin</span>
-                        <span id="marginBadge" class="sb-badge sb-badge-in-stock tabular">KES 0.00 / unit</span>
+                        <span id="marginBadge" class="sb-badge sb-badge-in-stock tabular">RM 0.00 / unit</span>
                     </div>
                     <div class="small text-muted" id="marginDetail">
                         Enter cost and selling prices above to see profit calculations.
@@ -102,10 +102,10 @@ document.addEventListener("DOMContentLoaded", function() {
             var profit = sell - cost;
             var marginPercent = (profit / sell) * 100;
             
-            marginBadge.textContent = "KES " + profit.toFixed(2) + " (" + marginPercent.toFixed(1) + "%)";
+            marginBadge.textContent = "RM " + profit.toFixed(2) + " (" + marginPercent.toFixed(1) + "%)";
             if (profit > 0) {
                 marginBadge.className = "sb-badge sb-badge-in-stock tabular";
-                marginDetail.textContent = "Healthy margin: you make KES " + profit.toFixed(2) + " on each sale.";
+                marginDetail.textContent = "Healthy margin: you make RM " + profit.toFixed(2) + " on each sale.";
             } else if (profit === 0) {
                 marginBadge.className = "sb-badge sb-badge-neutral tabular";
                 marginDetail.textContent = "Break-even: cost equals selling price.";
@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 marginDetail.textContent = "Warning: selling price is below wholesale cost!";
             }
         } else {
-            marginBadge.textContent = "KES 0.00 / unit";
+            marginBadge.textContent = "RM 0.00 / unit";
             marginDetail.textContent = "Enter cost and selling prices above to see profit calculations.";
         }
     }

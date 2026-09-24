@@ -10,7 +10,7 @@ Built with small businesses in mind, SmartBiz offers:
 - Intuitive inventory tracking with low-stock alerts
 - Real-time sales recording and revenue tracking
 - Simple but powerful analytics
-- Affordable subscription plans in KES
+- Affordable subscription plans in RM
 - Mobile-responsive design for on-the-go access
 
 ## Features
@@ -25,8 +25,8 @@ Built with small businesses in mind, SmartBiz offers:
 
 ### Subscription System
 - **Free Plan** - Up to 50 products, basic sales tracking, email support
-- **Basic Plan (KES 499/month)** - Up to 500 products, advanced tracking, real-time analytics, priority support
-- **Premium Plan (KES 1,499/month)** - Unlimited products, advanced reports, custom alerts, API access, 24/7 support
+- **Basic Plan (RM 499/month)** - Up to 500 products, advanced tracking, real-time analytics, priority support
+- **Premium Plan (RM 1,499/month)** - Unlimited products, advanced reports, custom alerts, API access, 24/7 support
 
 ### Admin Dashboard
 - Manage business owner accounts
@@ -418,7 +418,7 @@ For issues, questions, or suggestions:
 - Three-tier subscription system
 - Admin dashboard for platform management
 - Mobile-responsive design
-- KES pricing for African markets
+- RM pricing for African markets
 
 ---
 
