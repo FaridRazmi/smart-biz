@@ -36,8 +36,8 @@ export function Sidebar({ username, isStaff }: { username: string; isStaff: bool
   return (
     <aside className="sb-sidebar">
       <Link href="/dashboard" className="sb-sidebar-brand">
-        <div className="sb-brand-mark">SB</div>
-        <span className="sb-brand-title">SmartBiz</span>
+        <div className="sb-brand-mark">RB</div>
+        <span className="sb-brand-title">ReidBiz</span>
         {isStaff && <span className="sb-brand-badge">ADMIN</span>}
       </Link>
 
@@ -150,8 +150,8 @@ export function Topbar({ username }: { username: string }) {
           href="/dashboard"
           className="d-lg-none text-decoration-none text-dark d-flex align-items-center gap-2"
         >
-          <div className="sb-brand-mark">SB</div>
-          <span className="fw-bold fs-6">SmartBiz</span>
+          <div className="sb-brand-mark">RB</div>
+          <span className="fw-bold fs-6">ReidBiz</span>
         </Link>
         <span className="d-none d-lg-inline text-muted small">
           Store: <strong className="text-dark">{username}&apos;s Shop</strong>

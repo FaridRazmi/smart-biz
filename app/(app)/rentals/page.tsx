@@ -5,7 +5,7 @@ import { rm, toNumber } from "@/lib/format";
 import { DURATION_LABELS, formatRemaining, isDurationType } from "@/lib/rental";
 import { deleteRental, endRental } from "@/app/actions/rentals";
 
-export const metadata = { title: "Sewaan — SmartBiz" };
+export const metadata = { title: "Sewaan | ReidBiz" };
 export const dynamic = "force-dynamic";
 
 function durationLabel(type: string) {

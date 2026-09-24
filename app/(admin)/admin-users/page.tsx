@@ -5,7 +5,7 @@ import { getSessionUser } from "@/lib/auth";
 import { rm } from "@/lib/format";
 import { AdminStatusFilter } from "@/components/admin-nav";
 
-export const metadata = { title: "Merchant Accounts — SmartBiz Admin" };
+export const metadata = { title: "Merchant Accounts | ReidBiz Admin" };
 export const dynamic = "force-dynamic";
 
 function formatDate(date: Date) {

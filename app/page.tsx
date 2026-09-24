@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = { title: "SmartBiz — Sales & Inventory Ledger" };
+export const metadata = { title: "ReidBiz | Sales & Inventory Ledger" };
 
 export default function LandingPage() {
 
@@ -133,8 +133,8 @@ export default function LandingPage() {
       <header className="landing-header">
         <div className="container d-flex align-items-center justify-content-between py-3">
           <Link href="/" className="d-flex align-items-center gap-2 text-decoration-none text-dark">
-            <div className="sb-brand-mark">SB</div>
-            <span className="sb-brand-title">SmartBiz</span>
+            <div className="sb-brand-mark">RB</div>
+            <span className="sb-brand-title">ReidBiz</span>
           </Link>
 
           <div className="d-flex align-items-center gap-2">
@@ -174,7 +174,7 @@ export default function LandingPage() {
             <span className="preview-dot"></span>
             <span className="preview-dot"></span>
             <span className="preview-dot"></span>
-            <span className="ms-2 small text-muted font-monospace">smartbiz.local/dashboard — Daily Merchant Ledger</span>
+            <span className="ms-2 small text-muted font-monospace">reidbiz.local/dashboard | Daily Merchant Ledger</span>
           </div>
           <div className="p-3 p-md-4">
             <div className="row g-3 mb-4">
@@ -280,7 +280,7 @@ export default function LandingPage() {
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
                 </div>
                 <h4 className="mb-2">Automated Low-Stock Alerts</h4>
-                <p className="text-muted small mb-0">Never get caught telling a customer you&apos;re out. SmartBiz highlights products dipping below 10 units so you can reorder from suppliers ahead of time.</p>
+                <p className="text-muted small mb-0">Never get caught telling a customer you&apos;re out. ReidBiz highlights products dipping below 10 units so you can reorder from suppliers ahead of time.</p>
               </div>
             </div>
 
@@ -302,7 +302,7 @@ export default function LandingPage() {
         <div className="container py-3" style={{ maxWidth: "800px" }}>
           <div className="section-heading mb-4">
             <h2>Frequently Asked Questions</h2>
-            <p className="text-muted">Direct answers to how SmartBiz works for your store.</p>
+            <p className="text-muted">Direct answers to how ReidBiz works for your store.</p>
           </div>
 
           <div className="accordion faq-accordion" id="landingFaq">
@@ -360,9 +360,9 @@ export default function LandingPage() {
       <footer className="py-4" style={{ borderTop: "1px solid var(--sb-border)", background: "#ffffff" }}>
         <div className="container d-flex flex-wrap align-items-center justify-content-between gap-3 text-muted small">
           <div className="d-flex align-items-center gap-2">
-            <div className="sb-brand-mark" style={{ width: "24px", height: "24px", fontSize: "0.75rem" }}>SB</div>
-            <span className="fw-semibold text-dark">SmartBiz</span>
-            <span>— Merchant Sales & Inventory Ledger</span>
+            <div className="sb-brand-mark" style={{ width: "24px", height: "24px", fontSize: "0.75rem" }}>RB</div>
+            <span className="fw-semibold text-dark">ReidBiz</span>
+            <span>- Merchant Sales & Inventory Ledger</span>
           </div>
           <div>
             <Link href="/dashboard" className="text-decoration-none text-muted me-3">Dashboard</Link>

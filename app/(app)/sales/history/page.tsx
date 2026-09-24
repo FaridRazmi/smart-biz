@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { getSessionUser } from "@/lib/auth";
 import { rm, toNumber } from "@/lib/format";
 
-export const metadata = { title: "Sales Ledger & History — SmartBiz" };
+export const metadata = { title: "Sales Ledger & History | ReidBiz" };
 export const dynamic = "force-dynamic";
 
 const MONTHS = [

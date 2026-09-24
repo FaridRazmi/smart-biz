@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { getSessionUser } from "@/lib/auth";
 import { toggleUserStatus } from "@/app/actions/admin";
 
-export const metadata = { title: "Confirm Merchant Account Change — SmartBiz Admin" };
+export const metadata = { title: "Confirm Merchant Account Change | ReidBiz Admin" };
 export const dynamic = "force-dynamic";
 
 export default async function ToggleUserStatusPage({

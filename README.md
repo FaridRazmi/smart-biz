@@ -1,12 +1,12 @@
-# SmartBiz - Sales Management Platform for Small Businesses
+# ReidBiz - Sales Management Platform for Small Businesses
 
 A simple, affordable sales and inventory management platform designed specifically for small and micro-businesses in Africa. Track inventory, record sales, and understand your business with real-time analytics—all at a price that makes sense for your budget.
 
 ## Overview
 
-SmartBiz solves a critical problem: most business management tools are built for enterprises and priced accordingly. Small business owners, traders, and micro-entrepreneurs are left with spreadsheets, notebooks, or expensive solutions they can't afford. SmartBiz changes that.
+ReidBiz solves a critical problem: most business management tools are built for enterprises and priced accordingly. Small business owners, traders, and micro-entrepreneurs are left with spreadsheets, notebooks, or expensive solutions they can't afford. ReidBiz changes that.
 
-Built with small businesses in mind, SmartBiz offers:
+Built with small businesses in mind, ReidBiz offers:
 - Intuitive inventory tracking with low-stock alerts
 - Real-time sales recording and revenue tracking
 - Simple but powerful analytics
@@ -397,7 +397,7 @@ This project is licensed under the MIT License - see LICENSE file for details.
 
 For issues, questions, or suggestions:
 - Open an issue on GitHub
-- Contact: support@smartbiz.local
+- Contact: support@reidbiz.local
 - Documentation: [Add documentation link]
 
 ## Acknowledgments

@@ -5,7 +5,7 @@ import { rm, toNumber } from "@/lib/format";
 import { DURATION_LABELS, isDurationType } from "@/lib/rental";
 import PrintButton from "@/components/PrintButton";
 
-export const metadata = { title: "Resit Pendapatan Bulanan — SmartBiz" };
+export const metadata = { title: "Resit Pendapatan Bulanan | ReidBiz" };
 export const dynamic = "force-dynamic";
 
 function formatDateTime(date: Date) {
@@ -81,7 +81,7 @@ export default async function MonthlyReportPage({
       <div className="d-none d-print-block receipt-print">
         <div className="text-center mb-2">
           <div className="fw-bold" style={{ fontSize: "13px" }}>{user.username}&apos;s Shop</div>
-          <div>Resit Pendapatan — {monthLabel}</div>
+          <div>Resit Pendapatan | {monthLabel}</div>
           <div className="text-muted">Dijana {formatDateTime(now)}</div>
         </div>
 
@@ -160,7 +160,7 @@ export default async function MonthlyReportPage({
           </>
         )}
 
-        <div className="text-center mt-2">— Terima kasih —</div>
+        <div className="text-center mt-2">Terima kasih</div>
       </div>
 
       <div className="d-print-none">
@@ -192,7 +192,7 @@ export default async function MonthlyReportPage({
         <div className="sb-card-body p-4">
           <div className="d-flex flex-wrap justify-content-between gap-3 mb-4 pb-3 border-bottom">
             <div>
-              <div className="fw-bold text-dark fs-5">SmartBiz — Penyata Pendapatan</div>
+              <div className="fw-bold text-dark fs-5">ReidBiz | Penyata Pendapatan</div>
               <div className="text-muted small">
                 Bulan: {monthLabel} · Dijana pada {formatDateTime(now)}
               </div>

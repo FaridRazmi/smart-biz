@@ -5,7 +5,7 @@ import { getSessionUser } from "@/lib/auth";
 import { rm, toNumber } from "@/lib/format";
 import { accountExpiryStatus, daysUntil } from "@/lib/rental";
 
-export const metadata = { title: "Inventory & Products — SmartBiz" };
+export const metadata = { title: "Inventory & Products | ReidBiz" };
 export const dynamic = "force-dynamic";
 
 export default async function ProductsPage({
@@ -238,7 +238,7 @@ export default async function ProductsPage({
                       <td className="col-right tabular fw-bold text-dark fs-6">{product.quantity}</td>
                       <td className="col-right tabular text-muted">{rm(product.buyingPrice, { decimals: 2 })}</td>
                       <td className="col-right tabular fw-bold text-dark">
-                        {product.isRentable ? "—" : rm(product.sellingPrice, { decimals: 2 })}
+                        {product.isRentable ? "-" : rm(product.sellingPrice, { decimals: 2 })}
                       </td>
                       <td className="col-right">
                         <div className="d-inline-flex align-items-center gap-1">

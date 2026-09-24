@@ -5,7 +5,7 @@ import { getSessionUser } from "@/lib/auth";
 import { toNumber } from "@/lib/format";
 import { toLocalInputValue } from "@/lib/rental";
 
-export const metadata = { title: "Edit Product — SmartBiz" };
+export const metadata = { title: "Edit Product | ReidBiz" };
 export const dynamic = "force-dynamic";
 
 export default async function EditProductPage({

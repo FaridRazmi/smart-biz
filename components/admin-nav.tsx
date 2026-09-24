@@ -32,7 +32,7 @@ export function AdminSidebar({ username }: { username: string }) {
         <div className="sb-brand-mark" style={{ background: "#0284c7" }}>
           AD
         </div>
-        <span className="sb-brand-title">SmartBiz</span>
+        <span className="sb-brand-title">ReidBiz</span>
         <span className="sb-brand-badge" style={{ background: "#e0f2fe", color: "#0369a1" }}>
           ADMIN
         </span>

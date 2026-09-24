@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { getSessionUser } from "@/lib/auth";
 import { rm, toNumber } from "@/lib/format";
 
-export const metadata = { title: "Platform Control Dashboard — SmartBiz Admin" };
+export const metadata = { title: "Platform Control Dashboard | ReidBiz Admin" };
 export const dynamic = "force-dynamic";
 
 function formatDate(date: Date) {

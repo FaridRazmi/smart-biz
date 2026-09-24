@@ -5,7 +5,7 @@ import { getSessionUser } from "@/lib/auth";
 import { rm, toNumber } from "@/lib/format";
 import SalesTrendChart, { type DailySale } from "@/components/SalesTrendChart";
 
-export const metadata = { title: "Dashboard — SmartBiz Sales Ledger" };
+export const metadata = { title: "Dashboard | ReidBiz Sales Ledger" };
 export const dynamic = "force-dynamic";
 
 function startOfDay(date: Date) {

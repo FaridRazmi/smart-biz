@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import Script from "next/script";
 
 export const metadata: Metadata = {
-  title: "SmartBiz — Sales & Inventory Ledger",
+  title: "ReidBiz | Sales & Inventory Ledger",
   description: "Simple sales and inventory management for small shops.",
 };
 

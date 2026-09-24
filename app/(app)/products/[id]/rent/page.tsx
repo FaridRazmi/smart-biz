@@ -5,7 +5,7 @@ import { getSessionUser } from "@/lib/auth";
 import { rentalPrices, toLocalInputValue } from "@/lib/rental";
 import RecordRentForm from "@/components/RecordRentForm";
 
-export const metadata = { title: "Sewa Item — SmartBiz" };
+export const metadata = { title: "Sewa Item | ReidBiz" };
 export const dynamic = "force-dynamic";
 
 export default async function RentProductPage({

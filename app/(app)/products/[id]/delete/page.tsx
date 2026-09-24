@@ -14,13 +14,13 @@ export async function generateMetadata({
 }) {
   const user = await getSessionUser();
   const { id } = await params;
-  if (!user) return { title: "Delete Product — SmartBiz" };
+  if (!user) return { title: "Delete Product | ReidBiz" };
 
   const product = await prisma.product.findFirst({
     where: { id: Number(id), userId: user.id },
   });
   return {
-    title: product ? `Delete ${product.name} — SmartBiz` : "Delete Product — SmartBiz",
+    title: product ? `Delete ${product.name} | ReidBiz` : "Delete Product | ReidBiz",
   };
 }
 
