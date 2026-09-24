@@ -15,6 +15,7 @@ type ProductInput = {
   rentalPriceDay: string;
   rentalPriceWeek: string;
   rentalPriceMonth: string;
+  accountExpiryDate: string;
 };
 
 export default function ProductForm({
@@ -210,6 +211,24 @@ export default function ProductForm({
                       placeholder="0.00"
                       defaultValue={product?.rentalPriceMonth ?? ""}
                     />
+                  </div>
+                </div>
+                <div className="col-12">
+                  <div className="sb-form-group mb-0">
+                    <label htmlFor="account_expiry" className="sb-label">
+                      Tarikh Luput Akaun
+                    </label>
+                    <input
+                      type="date"
+                      name="account_expiry"
+                      id="account_expiry"
+                      className="sb-input tabular"
+                      defaultValue={product?.accountExpiryDate ?? ""}
+                    />
+                    <div className="sb-input-hint">
+                      Tarikh langganan akaun ini tamat. Sistem amaran bila hampir luput dan
+                      sekat sewa selepas luput.
+                    </div>
                   </div>
                 </div>
               </div>

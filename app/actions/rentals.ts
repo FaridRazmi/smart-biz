@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { getSessionUser } from "@/lib/auth";
-import { isDurationType, priceForProduct, rentalEndAt } from "@/lib/rental";
+import { accountExpiryStatus, isDurationType, priceForProduct, rentalEndAt } from "@/lib/rental";
 
 export type RentState = { error?: string };
 
@@ -39,6 +39,10 @@ export async function createRental(
   const parsedStart = startRaw ? new Date(startRaw) : new Date();
   const startAt = Number.isNaN(parsedStart.getTime()) ? new Date() : parsedStart;
   const endAt = rentalEndAt(startAt, durationType);
+
+  if (accountExpiryStatus(product.accountExpiryDate, startAt) === "expired") {
+    return { error: "Akaun ini dah luput. Perbaharui tarikh luput sebelum sewa." };
+  }
 
   const conflicts = await prisma.rental.count({
     where: {

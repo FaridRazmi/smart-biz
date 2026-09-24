@@ -3,6 +3,7 @@ import ProductForm from "@/components/ProductForm";
 import { prisma } from "@/lib/prisma";
 import { getSessionUser } from "@/lib/auth";
 import { toNumber } from "@/lib/format";
+import { toLocalInputValue } from "@/lib/rental";
 
 export const metadata = { title: "Edit Product — SmartBiz" };
 export const dynamic = "force-dynamic";
@@ -39,6 +40,10 @@ export default async function EditProductPage({
           product.rentalPriceWeek == null ? "" : toNumber(product.rentalPriceWeek).toString(),
         rentalPriceMonth:
           product.rentalPriceMonth == null ? "" : toNumber(product.rentalPriceMonth).toString(),
+        accountExpiryDate:
+          product.accountExpiryDate == null
+            ? ""
+            : toLocalInputValue(product.accountExpiryDate).slice(0, 10),
       }}
     />
   );

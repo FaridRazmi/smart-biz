@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS "Product" (
     "buyingPrice" DECIMAL(10,2) NOT NULL,
     "sellingPrice" DECIMAL(10,2) NOT NULL,
     "isRentable" BOOLEAN NOT NULL DEFAULT false,
+    "accountExpiryDate" TIMESTAMP(3),
     "rentalPrice3h" DECIMAL(10,2),
     "rentalPriceDay" DECIMAL(10,2),
     "rentalPriceWeek" DECIMAL(10,2),

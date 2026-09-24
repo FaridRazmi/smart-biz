@@ -25,10 +25,18 @@ function parsePrice(formData: FormData, key: string): number | null {
   return Number.isFinite(value) ? value : null;
 }
 
+function parseExpiry(formData: FormData): Date | null {
+  const raw = String(formData.get("account_expiry") ?? "").trim();
+  if (!raw) return null;
+  const date = new Date(`${raw}T23:59:59`);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
 function rentalFields(formData: FormData) {
   const isRentable = formData.get("is_rentable") === "on";
   return {
     isRentable,
+    accountExpiryDate: isRentable ? parseExpiry(formData) : null,
     rentalPrice3h: isRentable ? parsePrice(formData, "rental_price_3h") : null,
     rentalPriceDay: isRentable ? parsePrice(formData, "rental_price_day") : null,
     rentalPriceWeek: isRentable ? parsePrice(formData, "rental_price_week") : null,

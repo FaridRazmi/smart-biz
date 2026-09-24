@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getSessionUser } from "@/lib/auth";
 import { rm, toNumber } from "@/lib/format";
+import { accountExpiryStatus, daysUntil } from "@/lib/rental";
 
 export const metadata = { title: "Inventory & Products — SmartBiz" };
 export const dynamic = "force-dynamic";
@@ -17,6 +18,7 @@ export default async function ProductsPage({
 
   const { q = "", status = "all" } = await searchParams;
   const query = q.trim();
+  const now = new Date();
 
   const allProducts = await prisma.product.findMany({
     where: { userId: user.id },
@@ -25,7 +27,7 @@ export default async function ProductsPage({
 
   const activeRentalGroups = await prisma.rental.groupBy({
     by: ["productId"],
-    where: { userId: user.id, status: "active", endAt: { gt: new Date() } },
+    where: { userId: user.id, status: "active", endAt: { gt: now } },
     _count: { _all: true },
   });
   const activeByProduct = new Map(
@@ -177,6 +179,7 @@ export default async function ProductsPage({
                     const activeCount = activeByProduct.get(product.id) ?? 0;
                     const slots = Math.max(product.quantity, 1);
                     const available = activeCount < slots;
+                    const expiry = accountExpiryStatus(product.accountExpiryDate, now);
                     return (
                     <tr key={product.id}>
                       <td>
@@ -191,6 +194,19 @@ export default async function ProductsPage({
                           <span className="text-muted small d-block">
                             3j {rm(product.rentalPrice3h)} · hari {rm(product.rentalPriceDay)} ·
                             minggu {rm(product.rentalPriceWeek)} · bulan {rm(product.rentalPriceMonth)}
+                          </span>
+                        )}
+                        {product.isRentable && expiry !== "none" && (
+                          <span className="d-block mt-1">
+                            {expiry === "expired" ? (
+                              <span className="sb-badge sb-badge-out-of-stock">Akaun Luput</span>
+                            ) : expiry === "expiring" ? (
+                              <span className="sb-badge sb-badge-low-stock">
+                                Luput {daysUntil(product.accountExpiryDate ?? now, now)} hari
+                              </span>
+                            ) : (
+                              <span className="sb-badge sb-badge-in-stock">Akaun Aktif</span>
+                            )}
                           </span>
                         )}
                       </td>
@@ -227,7 +243,15 @@ export default async function ProductsPage({
                       <td className="col-right">
                         <div className="d-inline-flex align-items-center gap-1">
                           {product.isRentable ? (
-                            available ? (
+                            expiry === "expired" ? (
+                              <button
+                                className="sb-btn sb-btn-secondary sb-btn-sm py-1 px-2 disabled text-muted"
+                                disabled
+                                title="Akaun dah luput"
+                              >
+                                <span>Luput</span>
+                              </button>
+                            ) : available ? (
                               <Link
                                 href={`/products/${product.id}/rent`}
                                 className="sb-btn sb-btn-primary sb-btn-sm py-1 px-2"

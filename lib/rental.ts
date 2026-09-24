@@ -72,3 +72,22 @@ export function formatRemaining(endAt: Date, now: Date = new Date()) {
   if (hours > 0) return `${hours} jam ${minutes} min`;
   return `${minutes} min`;
 }
+
+export const EXPIRY_WARNING_DAYS = 3;
+
+export type AccountExpiryStatus = "none" | "active" | "expiring" | "expired";
+
+export function accountExpiryStatus(
+  expiry: Date | null | undefined,
+  now: Date = new Date(),
+): AccountExpiryStatus {
+  if (!expiry) return "none";
+  const diffMs = expiry.getTime() - now.getTime();
+  if (diffMs < 0) return "expired";
+  if (diffMs <= EXPIRY_WARNING_DAYS * 24 * 60 * 60 * 1000) return "expiring";
+  return "active";
+}
+
+export function daysUntil(date: Date, now: Date = new Date()) {
+  return Math.ceil((date.getTime() - now.getTime()) / (24 * 60 * 60 * 1000));
+}
