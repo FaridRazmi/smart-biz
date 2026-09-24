@@ -10,6 +10,11 @@ type ProductInput = {
   quantity: number;
   buyingPrice: string;
   sellingPrice: string;
+  isRentable: boolean;
+  rentalPrice3h: string;
+  rentalPriceDay: string;
+  rentalPriceWeek: string;
+  rentalPriceMonth: string;
 };
 
 export default function ProductForm({
@@ -21,6 +26,7 @@ export default function ProductForm({
 }) {
   const [cost, setCost] = useState(Number(product?.buyingPrice ?? 0));
   const [sell, setSell] = useState(Number(product?.sellingPrice ?? 0));
+  const [rentable, setRentable] = useState(product?.isRentable ?? false);
 
   const profit = sell - cost;
   const marginPercent = sell > 0 ? (profit / sell) * 100 : 0;
@@ -111,9 +117,103 @@ export default function ProductForm({
                 defaultValue={product?.quantity ?? 0}
               />
               <div className="sb-input-hint">
-                Current physical count available on store shelves.
+                {rentable
+                  ? "Bilangan slot/akaun yang boleh disewa serentak."
+                  : "Current physical count available on store shelves."}
               </div>
             </div>
+
+            <div className="p-3 bg-light border rounded mb-4">
+              <div className="form-check mb-1">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  name="is_rentable"
+                  id="is_rentable"
+                  checked={rentable}
+                  onChange={(event) => setRentable(event.target.checked)}
+                />
+                <label className="form-check-label fw-semibold text-dark" htmlFor="is_rentable">
+                  Barang Sewaan (boleh disewa)
+                </label>
+              </div>
+              <div className="small text-muted">
+                Tandakan jika item ini disewakan (cth akaun cloud game). Harga ikut tempoh di bawah.
+              </div>
+            </div>
+
+            {rentable && (
+              <div className="row g-3">
+                <div className="col-sm-6">
+                  <div className="sb-form-group">
+                    <label htmlFor="rental_price_3h" className="sb-label">
+                      Harga 3 Jam (RM)
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      name="rental_price_3h"
+                      id="rental_price_3h"
+                      className="sb-input tabular"
+                      placeholder="0.00"
+                      defaultValue={product?.rentalPrice3h ?? ""}
+                    />
+                  </div>
+                </div>
+                <div className="col-sm-6">
+                  <div className="sb-form-group">
+                    <label htmlFor="rental_price_day" className="sb-label">
+                      Harga 1 Hari (RM)
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      name="rental_price_day"
+                      id="rental_price_day"
+                      className="sb-input tabular"
+                      placeholder="0.00"
+                      defaultValue={product?.rentalPriceDay ?? ""}
+                    />
+                  </div>
+                </div>
+                <div className="col-sm-6">
+                  <div className="sb-form-group">
+                    <label htmlFor="rental_price_week" className="sb-label">
+                      Harga 1 Minggu (RM)
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      name="rental_price_week"
+                      id="rental_price_week"
+                      className="sb-input tabular"
+                      placeholder="0.00"
+                      defaultValue={product?.rentalPriceWeek ?? ""}
+                    />
+                  </div>
+                </div>
+                <div className="col-sm-6">
+                  <div className="sb-form-group">
+                    <label htmlFor="rental_price_month" className="sb-label">
+                      Harga 1 Bulan (RM)
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      name="rental_price_month"
+                      id="rental_price_month"
+                      className="sb-input tabular"
+                      placeholder="0.00"
+                      defaultValue={product?.rentalPriceMonth ?? ""}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className="row g-3">
               <div className="col-sm-6">

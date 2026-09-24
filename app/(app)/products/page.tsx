@@ -23,6 +23,15 @@ export default async function ProductsPage({
     orderBy: { name: "asc" },
   });
 
+  const activeRentalGroups = await prisma.rental.groupBy({
+    by: ["productId"],
+    where: { userId: user.id, status: "active", endAt: { gt: new Date() } },
+    _count: { _all: true },
+  });
+  const activeByProduct = new Map(
+    activeRentalGroups.map((group) => [group.productId, group._count._all]),
+  );
+
   const totalInventoryItems = allProducts.length;
   const lowStockCount = allProducts.filter((p) => p.quantity > 0 && p.quantity < 10).length;
   const outOfStockCount = allProducts.filter((p) => p.quantity === 0).length;
@@ -164,14 +173,33 @@ export default async function ProductsPage({
                   </tr>
                 </thead>
                 <tbody>
-                  {products.map((product) => (
+                  {products.map((product) => {
+                    const activeCount = activeByProduct.get(product.id) ?? 0;
+                    const slots = Math.max(product.quantity, 1);
+                    const available = activeCount < slots;
+                    return (
                     <tr key={product.id}>
                       <td>
-                        <div className="fw-semibold text-dark">{product.name}</div>
+                        <div className="fw-semibold text-dark">
+                          {product.name}
+                          {product.isRentable && (
+                            <span className="sb-badge sb-badge-neutral ms-2">Sewaan</span>
+                          )}
+                        </div>
                         <span className="text-muted small">Item #{product.id}</span>
                       </td>
                       <td>
-                        {product.quantity === 0 ? (
+                        {product.isRentable ? (
+                          available ? (
+                            <span className="sb-badge sb-badge-in-stock">
+                              <span className="sb-status-dot green" /> Tersedia
+                            </span>
+                          ) : (
+                            <span className="sb-badge sb-badge-low-stock">
+                              <span className="sb-status-dot amber" /> Disewa
+                            </span>
+                          )
+                        ) : product.quantity === 0 ? (
                           <span className="sb-badge sb-badge-out-of-stock">
                             <span className="sb-status-dot red" /> Out of Stock
                           </span>
@@ -190,7 +218,29 @@ export default async function ProductsPage({
                       <td className="col-right tabular fw-bold text-dark">{rm(product.sellingPrice, { decimals: 2 })}</td>
                       <td className="col-right">
                         <div className="d-inline-flex align-items-center gap-1">
-                          {product.quantity > 0 ? (
+                          {product.isRentable ? (
+                            available ? (
+                              <Link
+                                href={`/products/${product.id}/rent`}
+                                className="sb-btn sb-btn-primary sb-btn-sm py-1 px-2"
+                                title="Sewa item ini"
+                              >
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                  <circle cx="9" cy="21" r="1" />
+                                  <circle cx="20" cy="21" r="1" />
+                                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                                </svg>
+                                <span>Sewa</span>
+                              </Link>
+                            ) : (
+                              <button
+                                className="sb-btn sb-btn-secondary sb-btn-sm py-1 px-2 disabled text-muted"
+                                disabled
+                              >
+                                <span>Disewa</span>
+                              </button>
+                            )
+                          ) : product.quantity > 0 ? (
                             <Link
                               href={`/products/${product.id}/sale`}
                               className="sb-btn sb-btn-primary sb-btn-sm py-1 px-2"
@@ -236,7 +286,8 @@ export default async function ProductsPage({
                         </div>
                       </td>
                     </tr>
-                  ))}
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

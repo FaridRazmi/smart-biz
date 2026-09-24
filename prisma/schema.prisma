@@ -20,18 +20,44 @@ model User {
   dateJoined   DateTime  @default(now())
   products     Product[]
   sales        Sale[]
+  rentals      Rental[]
 }
 
 model Product {
-  id           Int      @id @default(autoincrement())
-  userId       Int
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name         String
-  quantity     Int      @default(0)
-  buyingPrice  Decimal  @db.Decimal(10, 2)
-  sellingPrice Decimal  @db.Decimal(10, 2)
-  createdAt    DateTime @default(now())
-  sales        Sale[]
+  id               Int      @id @default(autoincrement())
+  userId           Int
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name             String
+  quantity         Int      @default(0)
+  buyingPrice      Decimal  @db.Decimal(10, 2)
+  sellingPrice     Decimal  @db.Decimal(10, 2)
+  isRentable       Boolean  @default(false)
+  rentalPrice3h    Decimal? @db.Decimal(10, 2)
+  rentalPriceDay   Decimal? @db.Decimal(10, 2)
+  rentalPriceWeek  Decimal? @db.Decimal(10, 2)
+  rentalPriceMonth Decimal? @db.Decimal(10, 2)
+  createdAt        DateTime @default(now())
+  sales            Sale[]
+  rentals          Rental[]
+}
+
+model Rental {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId     Int
+  product       Product  @relation(fields: [productId], references: [id], onDelete: Restrict)
+  customerName  String
+  customerPhone String   @default("")
+  durationType  String
+  startAt       DateTime @default(now())
+  endAt         DateTime
+  price         Decimal  @db.Decimal(10, 2)
+  status        String   @default("active")
+  createdAt     DateTime @default(now())
+
+  @@index([userId])
+  @@index([productId])
 }
 
 model Sale {

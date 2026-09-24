@@ -15,6 +15,25 @@ function revalidateApp() {
   revalidatePath("/dashboard");
   revalidatePath("/products");
   revalidatePath("/sales/history");
+  revalidatePath("/rentals");
+}
+
+function parsePrice(formData: FormData, key: string): number | null {
+  const raw = String(formData.get(key) ?? "").trim();
+  if (!raw) return null;
+  const value = Number(raw);
+  return Number.isFinite(value) ? value : null;
+}
+
+function rentalFields(formData: FormData) {
+  const isRentable = formData.get("is_rentable") === "on";
+  return {
+    isRentable,
+    rentalPrice3h: isRentable ? parsePrice(formData, "rental_price_3h") : null,
+    rentalPriceDay: isRentable ? parsePrice(formData, "rental_price_day") : null,
+    rentalPriceWeek: isRentable ? parsePrice(formData, "rental_price_week") : null,
+    rentalPriceMonth: isRentable ? parsePrice(formData, "rental_price_month") : null,
+  };
 }
 
 export async function createProduct(formData: FormData) {
@@ -30,6 +49,7 @@ export async function createProduct(formData: FormData) {
       quantity: Number(formData.get("quantity") ?? 0) || 0,
       buyingPrice: Number(formData.get("buying_price") ?? 0) || 0,
       sellingPrice: Number(formData.get("selling_price") ?? 0) || 0,
+      ...rentalFields(formData),
     },
   });
 
@@ -54,6 +74,7 @@ export async function updateProduct(formData: FormData) {
       quantity: Number(formData.get("quantity") ?? 0) || 0,
       buyingPrice: Number(formData.get("buying_price") ?? 0) || 0,
       sellingPrice: Number(formData.get("selling_price") ?? 0) || 0,
+      ...rentalFields(formData),
     },
   });
 
@@ -69,6 +90,12 @@ export async function deleteProduct(formData: FormData) {
 
   const product = await prisma.product.findFirst({ where: { id, userId: user.id } });
   if (!product) redirect("/products");
+
+  const customerRecords = await prisma.sale.count({ where: { productId: id } });
+  const rentalRecords = await prisma.rental.count({ where: { productId: id } });
+  if (customerRecords > 0 || rentalRecords > 0) {
+    redirect("/products");
+  }
 
   await prisma.product.delete({ where: { id } });
 

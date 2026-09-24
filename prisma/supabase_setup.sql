@@ -23,8 +23,28 @@ CREATE TABLE IF NOT EXISTS "Product" (
     "quantity" INTEGER NOT NULL DEFAULT 0,
     "buyingPrice" DECIMAL(10,2) NOT NULL,
     "sellingPrice" DECIMAL(10,2) NOT NULL,
+    "isRentable" BOOLEAN NOT NULL DEFAULT false,
+    "rentalPrice3h" DECIMAL(10,2),
+    "rentalPriceDay" DECIMAL(10,2),
+    "rentalPriceWeek" DECIMAL(10,2),
+    "rentalPriceMonth" DECIMAL(10,2),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
+);
+
+CREATE TABLE IF NOT EXISTS "Rental" (
+    "id" SERIAL NOT NULL,
+    "userId" INTEGER NOT NULL,
+    "productId" INTEGER NOT NULL,
+    "customerName" TEXT NOT NULL,
+    "customerPhone" TEXT NOT NULL DEFAULT '',
+    "durationType" TEXT NOT NULL,
+    "startAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "endAt" TIMESTAMP(3) NOT NULL,
+    "price" DECIMAL(10,2) NOT NULL,
+    "status" TEXT NOT NULL DEFAULT 'active',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "Rental_pkey" PRIMARY KEY ("id")
 );
 
 CREATE TABLE IF NOT EXISTS "Sale" (
@@ -38,12 +58,18 @@ CREATE TABLE IF NOT EXISTS "Sale" (
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS "User_username_key" ON "User"("username");
+CREATE INDEX IF NOT EXISTS "Rental_userId_idx" ON "Rental"("userId");
+CREATE INDEX IF NOT EXISTS "Rental_productId_idx" ON "Rental"("productId");
 
 ALTER TABLE "Product" ADD CONSTRAINT "Product_userId_fkey"
     FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "Sale" ADD CONSTRAINT "Sale_userId_fkey"
     FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "Sale" ADD CONSTRAINT "Sale_productId_fkey"
+    FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Rental" ADD CONSTRAINT "Rental_userId_fkey"
+    FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Rental" ADD CONSTRAINT "Rental_productId_fkey"
     FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- Admin account: username "admin", password "admin123"

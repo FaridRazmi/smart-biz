@@ -30,6 +30,15 @@ export default async function EditProductPage({
         quantity: product.quantity,
         buyingPrice: toNumber(product.buyingPrice).toString(),
         sellingPrice: toNumber(product.sellingPrice).toString(),
+        isRentable: product.isRentable,
+        rentalPrice3h:
+          product.rentalPrice3h == null ? "" : toNumber(product.rentalPrice3h).toString(),
+        rentalPriceDay:
+          product.rentalPriceDay == null ? "" : toNumber(product.rentalPriceDay).toString(),
+        rentalPriceWeek:
+          product.rentalPriceWeek == null ? "" : toNumber(product.rentalPriceWeek).toString(),
+        rentalPriceMonth:
+          product.rentalPriceMonth == null ? "" : toNumber(product.rentalPriceMonth).toString(),
       }}
     />
   );

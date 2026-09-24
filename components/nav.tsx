@@ -86,6 +86,17 @@ export function Sidebar({ username, isStaff }: { username: string; isStaff: bool
           icon(<path d="M12 20v-6M6 20V10M18 20V4" />),
           "Sales Ledger",
         )}
+        {link(
+          "/rentals",
+          pathname.startsWith("/rentals"),
+          icon(
+            <>
+              <circle cx="12" cy="12" r="9" />
+              <polyline points="12 7 12 12 15.5 14" />
+            </>,
+          ),
+          "Sewaan",
+        )}
 
         {isStaff && (
           <>
@@ -194,6 +205,16 @@ export function MobileNav() {
           <path d="M12 20v-6M6 20V10M18 20V4" />
         </svg>
         <span>Ledger</span>
+      </Link>
+      <Link
+        href="/rentals"
+        className={`sb-mobile-tab ${pathname.startsWith("/rentals") ? "active" : ""}`}
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="12" r="9" />
+          <polyline points="12 7 12 12 15.5 14" />
+        </svg>
+        <span>Sewa</span>
       </Link>
       <Link href="/products/new" className={`sb-mobile-tab ${isNew ? "active" : ""}`}>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
