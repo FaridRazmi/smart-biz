@@ -52,7 +52,7 @@ Thumbs.db
 .LSOverride
 
 # Static and Media
-/staticfiles/
+staticfiles/
 /media/
 
 # Testing
