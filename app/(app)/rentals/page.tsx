@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getSessionUser } from "@/lib/auth";
 import { rm, toNumber } from "@/lib/format";
 import { DURATION_LABELS, formatRemaining, isDurationType } from "@/lib/rental";
-import { endRental } from "@/app/actions/rentals";
+import { deleteRental, endRental } from "@/app/actions/rentals";
 
 export const metadata = { title: "Sewaan — SmartBiz" };
 export const dynamic = "force-dynamic";
@@ -180,6 +180,7 @@ export default async function RentalsPage() {
                     <th>Mula</th>
                     <th>Tamat</th>
                     <th className="col-right">Harga</th>
+                    <th className="col-right">Tindakan</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -209,6 +210,21 @@ export default async function RentalsPage() {
                             {rm(rental.originalPrice)}
                           </span>
                         )}
+                      </td>
+                      <td className="col-right">
+                        <form method="POST" action={deleteRental} className="m-0">
+                          <input type="hidden" name="id" value={rental.id} />
+                          <button
+                            type="submit"
+                            className="sb-btn sb-btn-outline-danger sb-btn-sm py-1 px-2"
+                            title="Padam rekod sewa ini"
+                          >
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <polyline points="3 6 5 6 21 6" />
+                              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                            </svg>
+                          </button>
+                        </form>
                       </td>
                     </tr>
                   ))}

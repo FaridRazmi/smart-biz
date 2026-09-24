@@ -99,3 +99,16 @@ export async function endRental(formData: FormData) {
   revalidateAll();
   redirect("/rentals");
 }
+
+export async function deleteRental(formData: FormData) {
+  const user = await getSessionUser();
+
+  const id = Number(formData.get("id"));
+  const rental = await prisma.rental.findFirst({ where: { id, userId: user.id } });
+  if (!rental) redirect("/rentals");
+
+  await prisma.rental.delete({ where: { id } });
+
+  revalidateAll();
+  redirect("/rentals");
+}
