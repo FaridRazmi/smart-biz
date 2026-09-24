@@ -19,8 +19,19 @@ export function isDurationType(value: string): value is DurationType {
   return (DURATION_TYPES as readonly string[]).includes(value);
 }
 
+export function durationHours(type: DurationType): number {
+  return DURATION_HOURS[type];
+}
+
 export function rentalEndAt(start: Date, type: DurationType) {
   return new Date(start.getTime() + DURATION_HOURS[type] * 60 * 60 * 1000);
+}
+
+export function toLocalInputValue(date: Date) {
+  const pad = (value: number) => String(value).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(
+    date.getHours(),
+  )}:${pad(date.getMinutes())}`;
 }
 
 type ProductPriceFields = {

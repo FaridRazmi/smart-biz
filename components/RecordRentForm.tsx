@@ -2,12 +2,26 @@
 
 import { useActionState, useState } from "react";
 import { createRental, type RentState } from "@/app/actions/rentals";
-import { DURATION_LABELS, DURATION_TYPES, type DurationType } from "@/lib/rental";
+import {
+  DURATION_LABELS,
+  DURATION_TYPES,
+  durationHours,
+  rentalEndAt,
+  type DurationType,
+} from "@/lib/rental";
 
 const initialState: RentState = {};
 
+function formatDateTime(date: Date) {
+  const pad = (value: number) => String(value).padStart(2, "0");
+  return `${pad(date.getDate())}/${pad(date.getMonth() + 1)}/${date.getFullYear()} ${pad(
+    date.getHours(),
+  )}:${pad(date.getMinutes())}`;
+}
+
 export default function RecordRentForm({
   product,
+  defaultStartAt,
 }: {
   product: {
     id: number;
@@ -17,10 +31,15 @@ export default function RecordRentForm({
     slots: number;
     activeCount: number;
   };
+  defaultStartAt: string;
 }) {
   const [state, formAction, pending] = useActionState(createRental, initialState);
   const [duration, setDuration] = useState<DurationType>("3h");
+  const [start, setStart] = useState(defaultStartAt);
   const price = product.prices[duration];
+
+  const endAt = start ? rentalEndAt(new Date(start), duration) : null;
+  const validEnd = endAt && !Number.isNaN(endAt.getTime()) ? endAt : null;
 
   return (
     <>
@@ -69,6 +88,24 @@ export default function RecordRentForm({
         </div>
 
         <div className="sb-form-group">
+          <label htmlFor="start_at" className="sb-label">
+            Tarikh &amp; Masa Mula
+          </label>
+          <input
+            type="datetime-local"
+            name="start_at"
+            id="start_at"
+            className="sb-input tabular"
+            value={start}
+            onChange={(event) => setStart(event.target.value)}
+            required
+          />
+          <div className="sb-input-hint">
+            Untuk rekod penyewa lepas, pilih tarikh &amp; masa dahulu.
+          </div>
+        </div>
+
+        <div className="sb-form-group">
           <label htmlFor="customer_name" className="sb-label">
             Nama Pelanggan
           </label>
@@ -95,14 +132,19 @@ export default function RecordRentForm({
           />
         </div>
 
-        <div className="p-3 bg-light border rounded mb-4 d-flex justify-content-between align-items-center">
-          <span className="small fw-semibold text-dark">Jumlah Bayaran</span>
-          <span className="fs-4 fw-bold text-success tabular">RM {price.toFixed(2)}</span>
+        <div className="p-3 bg-light border rounded mb-4">
+          <div className="d-flex justify-content-between align-items-center">
+            <span className="small fw-semibold text-dark">Jumlah Bayaran</span>
+            <span className="fs-4 fw-bold text-success tabular">RM {price.toFixed(2)}</span>
+          </div>
+          <div className="small text-muted mt-1">
+            Tamat: {validEnd ? formatDateTime(validEnd) : "-"}
+          </div>
         </div>
 
         <button
           type="submit"
-          disabled={pending || !product.available}
+          disabled={pending}
           className="sb-btn sb-btn-primary w-100 sb-btn-lg"
         >
           {pending ? "Memproses..." : "Mula Sewa"}

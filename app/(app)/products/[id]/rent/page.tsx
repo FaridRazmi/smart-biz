@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getSessionUser } from "@/lib/auth";
-import { rentalPrices } from "@/lib/rental";
+import { rentalPrices, toLocalInputValue } from "@/lib/rental";
 import RecordRentForm from "@/components/RecordRentForm";
 
 export const metadata = { title: "Sewa Item — SmartBiz" };
@@ -79,6 +79,7 @@ export default async function RentProductPage({
               slots,
               activeCount,
             }}
+            defaultStartAt={toLocalInputValue(new Date())}
           />
         </div>
       </div>

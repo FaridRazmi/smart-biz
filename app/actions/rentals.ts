@@ -35,14 +35,25 @@ export async function createRental(
   }
   const customerPhone = String(formData.get("customer_phone") ?? "").trim();
 
-  const now = new Date();
-  const activeCount = await prisma.rental.count({
-    where: { productId: product.id, status: "active", endAt: { gt: now } },
+  const startRaw = String(formData.get("start_at") ?? "").trim();
+  const parsedStart = startRaw ? new Date(startRaw) : new Date();
+  const startAt = Number.isNaN(parsedStart.getTime()) ? new Date() : parsedStart;
+  const endAt = rentalEndAt(startAt, durationType);
+
+  const conflicts = await prisma.rental.count({
+    where: {
+      productId: product.id,
+      status: { not: "cancelled" },
+      startAt: { lt: endAt },
+      endAt: { gt: startAt },
+    },
   });
 
   const slots = Math.max(product.quantity, 1);
-  if (activeCount >= slots) {
-    return { error: "Item ini sedang disewa. Tamatkan sewa semasa dahulu." };
+  if (conflicts >= slots) {
+    return {
+      error: "Tempoh ini bertindih dengan sewaan lain untuk item ini. Pilih masa lain.",
+    };
   }
 
   await prisma.rental.create({
@@ -52,10 +63,10 @@ export async function createRental(
       customerName,
       customerPhone,
       durationType,
-      startAt: now,
-      endAt: rentalEndAt(now, durationType),
+      startAt,
+      endAt,
       price: priceForProduct(product, durationType),
-      status: "active",
+      status: endAt.getTime() > Date.now() ? "active" : "completed",
     },
   });
 
