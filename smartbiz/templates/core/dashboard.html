@@ -1,612 +1,297 @@
 {% extends "core/base.html" %}
+
+{% block title %}Dashboard — SmartBiz Sales Ledger{% endblock %}
+
 {% block content %}
-
-<style>
-    /* Animations */
-    @keyframes slideInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    @keyframes slideInLeft {
-        from {
-            opacity: 0;
-            transform: translateX(-20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    }
-
-    @keyframes pulse {
-        0%, 100% {
-            opacity: 1;
-        }
-        50% {
-            opacity: 0.7;
-        }
-    }
-
-    @keyframes counterUp {
-        from {
-            opacity: 0;
-            transform: scale(0.8);
-        }
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
-    }
-
-    /* Dashboard container */
-    .dashboard-header {
-        animation: slideInUp 0.6s ease-out;
-        margin-bottom: 2rem;
-    }
-
-    .dashboard-header h3 {
-        font-size: 1.75rem;
-        font-weight: 700;
-        color: #1f2937;
-    }
-
-    /* Metric Cards - Premium style */
-    .metric-card {
-        animation: slideInUp 0.6s ease-out;
-        animation-fill-mode: both;
-        border: none !important;
-        background: #ffffff;
-        border-radius: 12px;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-        overflow: hidden;
-        position: relative;
-    }
-
-    .metric-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, #2563EB, #0ea5e9);
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform 0.3s ease;
-    }
-
-    .metric-card:hover::before {
-        transform: scaleX(1);
-    }
-
-    .metric-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 12px 24px rgba(37, 99, 235, 0.15);
-    }
-
-    /* Stagger animation for cards */
-    .metric-card:nth-child(1) { animation-delay: 0.1s; }
-    .metric-card:nth-child(2) { animation-delay: 0.2s; }
-    .metric-card:nth-child(3) { animation-delay: 0.3s; }
-    .metric-card:nth-child(4) { animation-delay: 0.4s; }
-
-    .metric-card .card-body {
-        padding: 1.5rem;
-    }
-
-    .metric-value {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #2563EB;
-        margin: 0.5rem 0;
-        animation: counterUp 0.8s ease-out;
-    }
-
-    .metric-title {
-        font-size: 0.85rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        color: #6b7280;
-        margin-bottom: 0.5rem;
-    }
-
-    .metric-emoji {
-        font-size: 1.75rem;
-        animation: pulse 2s infinite;
-    }
-
-    .metric-subtitle {
-        font-size: 0.8rem;
-        color: #9ca3af;
-        margin-top: 0.5rem;
-    }
-
-    /* Inventory cards */
-    .inventory-card {
-        animation: slideInUp 0.6s ease-out;
-        animation-fill-mode: both;
-        border-radius: 12px;
-        background: #ffffff;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-        transition: all 0.3s ease;
-    }
-
-    .inventory-card:nth-child(5) { animation-delay: 0.15s; }
-    .inventory-card:nth-child(6) { animation-delay: 0.25s; }
-    .inventory-card:nth-child(7) { animation-delay: 0.35s; }
-    .inventory-card:nth-child(8) { animation-delay: 0.45s; }
-
-    .inventory-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    }
-
-    .inventory-card .card-body {
-        padding: 1.25rem;
-        text-align: center;
-    }
-
-    .inventory-card .fs-3 {
-        animation: counterUp 0.8s ease-out;
-    }
-
-    /* Chart Card */
-    .chart-card {
-        animation: slideInUp 0.7s ease-out 0.5s;
-        animation-fill-mode: both;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-        border: none !important;
-    }
-
-    .chart-card:hover {
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Quick Stats Card */
-    .quick-stats-card {
-        animation: slideInUp 0.7s ease-out 0.6s;
-        animation-fill-mode: both;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-        border: none !important;
-    }
-
-    /* Progress bar animation */
-    .progress {
-        background-color: #e5e7eb;
-        border-radius: 10px;
-        height: 8px;
-    }
-
-    .progress-bar {
-        background: linear-gradient(90deg, #2563EB, #0ea5e9);
-        border-radius: 10px;
-        transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
-        animation: slideInLeft 1s ease-out;
-    }
-
-    /* List items animation */
-    .list-group-item {
-        animation: slideInLeft 0.5s ease-out;
-        animation-fill-mode: both;
-        border: none !important;
-        background: transparent;
-        transition: all 0.3s ease;
-        border-bottom: 1px solid #f3f4f6;
-    }
-
-    .list-group-item:last-child {
-        border-bottom: none;
-    }
-
-    .list-group-item:hover {
-        background-color: #f9fafb;
-        transform: translateX(4px);
-        padding-left: 0.5rem;
-    }
-
-    .list-group-item:nth-child(1) { animation-delay: 0.7s; }
-    .list-group-item:nth-child(2) { animation-delay: 0.75s; }
-    .list-group-item:nth-child(3) { animation-delay: 0.8s; }
-    .list-group-item:nth-child(4) { animation-delay: 0.85s; }
-    .list-group-item:nth-child(5) { animation-delay: 0.9s; }
-
-    /* Card headers */
-    .card-header {
-        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%) !important;
-        border-bottom: 1px solid #e5e7eb !important;
-        transition: all 0.3s ease;
-    }
-
-    .card-header h6 {
-        color: #1f2937;
-        font-weight: 600;
-    }
-
-    /* Value highlights */
-    .text-primary {
-        color: #2563EB !important;
-    }
-
-    .text-info {
-        color: #06b6d4 !important;
-    }
-
-    .text-success {
-        color: #10b981 !important;
-    }
-
-    .text-warning {
-        color: #f59e0b !important;
-    }
-
-    .text-danger {
-        color: #ef4444 !important;
-    }
-
-    /* Badge animation */
-    .stat-badge {
-        display: inline-block;
-        padding: 0.25rem 0.75rem;
-        border-radius: 20px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        background: #eff6ff;
-        color: #1e40af;
-        animation: slideInUp 0.6s ease-out;
-    }
-
-    /* Enhanced spacing */
-    .section-spacing {
-        margin-bottom: 2rem;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-        .metric-card {
-            margin-bottom: 1rem;
-        }
-
-        .metric-value {
-            font-size: 1.5rem;
-        }
-
-        .dashboard-header h3 {
-            font-size: 1.5rem;
-        }
-    }
-</style>
-
-<div class="dashboard-header">
-    <h3 class="fw-semibold mb-1">Dashboard</h3>
-    <p class="text-muted small">Welcome back! Here's your business overview.</p>
+<!-- Top Header & Actions -->
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+        <h1 class="h3 mb-1">Store Overview</h1>
+        <p class="text-muted small mb-0">Real-time sales performance and active stock status for today.</p>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+        <a href="{% url 'product_create' %}" class="sb-btn sb-btn-secondary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+            <span>New Product</span>
+        </a>
+        <a href="{% url 'product_list' %}" class="sb-btn sb-btn-primary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+            <span>Record A Sale</span>
+        </a>
+    </div>
 </div>
 
-<!-- Key Metrics Cards -->
-<div class="row g-3 section-spacing">
-    <!-- Today's Sales -->
-    <div class="col-md-6 col-lg-3">
-        <div class="card metric-card h-100 border-0">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start mb-2">
-                    <div class="flex-grow-1">
-                        <h6 class="metric-title">Today's Sales</h6>
-                        <p class="metric-value mb-0">KES {{ total_today }}</p>
-                        <small class="metric-subtitle">{{ sales_count_today }} transaction{{ sales_count_today|pluralize }}</small>
-                    </div>
-                    <span class="metric-emoji">📊</span>
-                </div>
+<!-- Primary Metric Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-xl-3">
+        <div class="sb-stat-card">
+            <div>
+                <span class="sb-stat-label">
+                    Today's Revenue
+                    <span class="sb-status-dot green"></span>
+                </span>
+                <div class="sb-stat-value text-dark tabular">KES {{ total_today|default:"0" }}</div>
+            </div>
+            <div class="sb-stat-meta positive">
+                {{ sales_count_today }} sale{{ sales_count_today|pluralize }} recorded today
             </div>
         </div>
     </div>
 
-    <!-- This Week -->
-    <div class="col-md-6 col-lg-3">
-        <div class="card metric-card h-100 border-0">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start mb-2">
-                    <div class="flex-grow-1">
-                        <h6 class="metric-title">This Week</h6>
-                        <p class="metric-value text-info mb-0">KES {{ total_week }}</p>
-                        <small class="metric-subtitle">{{ sales_count_week }} transaction{{ sales_count_week|pluralize }}</small>
-                    </div>
-                    <span class="metric-emoji">📈</span>
-                </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="sb-stat-card">
+            <div>
+                <span class="sb-stat-label">Last 7 Days</span>
+                <div class="sb-stat-value tabular">KES {{ total_week|default:"0" }}</div>
+            </div>
+            <div class="sb-stat-meta">
+                {{ sales_count_week }} transaction{{ sales_count_week|pluralize }} this week
             </div>
         </div>
     </div>
 
-    <!-- This Month -->
-    <div class="col-md-6 col-lg-3">
-        <div class="card metric-card h-100 border-0">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start mb-2">
-                    <div class="flex-grow-1">
-                        <h6 class="metric-title">This Month</h6>
-                        <p class="metric-value text-success mb-0">KES {{ total_month }}</p>
-                        <small class="metric-subtitle">Avg: KES {{ avg_sale_value }} per sale</small>
-                    </div>
-                    <span class="metric-emoji">💰</span>
-                </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="sb-stat-card">
+            <div>
+                <span class="sb-stat-label">Healthy Stock</span>
+                <div class="sb-stat-value tabular">{{ in_stock_count }} Items</div>
+            </div>
+            <div class="sb-stat-meta">
+                Out of {{ total_products_count }} total listed products
             </div>
         </div>
     </div>
 
-    <!-- All Time -->
-    <div class="col-md-6 col-lg-3">
-        <div class="card metric-card h-100 border-0">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start mb-2">
-                    <div class="flex-grow-1">
-                        <h6 class="metric-title">All Time</h6>
-                        <p class="metric-value text-warning mb-0">KES {{ total_all_time }}</p>
-                        <small class="metric-subtitle">{{ all_time_transactions }} transaction{{ all_time_transactions|pluralize }}</small>
-                    </div>
-                    <span class="metric-emoji">⭐</span>
+    <div class="col-sm-6 col-xl-3">
+        <div class="sb-stat-card">
+            <div>
+                <span class="sb-stat-label">
+                    Attention Needed
+                    {% if low_stock_count > 0 or out_of_stock > 0 %}
+                    <span class="sb-status-dot red"></span>
+                    {% endif %}
+                </span>
+                <div class="sb-stat-value tabular {% if low_stock_count > 0 or out_of_stock > 0 %}text-danger{% else %}text-muted{% endif %}">
+                    {{ low_stock_count|add:out_of_stock }} Items
                 </div>
+            </div>
+            <div class="sb-stat-meta {% if low_stock_count > 0 or out_of_stock > 0 %}critical{% endif %}">
+                {% if low_stock_count > 0 or out_of_stock > 0 %}
+                {{ low_stock_count }} low stock, {{ out_of_stock }} out of stock
+                {% else %}
+                All items sufficiently stocked
+                {% endif %}
             </div>
         </div>
     </div>
 </div>
 
-<!-- Inventory Summary -->
-<div class="row g-3 section-spacing">
-    <div class="col-md-6 col-lg-3">
-        <div class="card inventory-card border-0">
-            <div class="card-body">
-                <h6 class="text-muted small mb-2">Total Products</h6>
-                <p class="fs-3 fw-bold text-primary mb-0">{{ products.count }}</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-6 col-lg-3">
-        <div class="card inventory-card border-0">
-            <div class="card-body">
-                <h6 class="text-muted small mb-2">Low Stock</h6>
-                <p class="fs-3 fw-bold text-warning mb-0">{{ low_stock_count }}</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-6 col-lg-3">
-        <div class="card inventory-card border-0">
-            <div class="card-body">
-                <h6 class="text-muted small mb-2">Out of Stock</h6>
-                <p class="fs-3 fw-bold text-danger mb-0">{{ out_of_stock }}</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-6 col-lg-3">
-        <div class="card inventory-card border-0">
-            <div class="card-body">
-                <h6 class="text-muted small mb-2">In Stock</h6>
-                <p class="fs-3 fw-bold text-success mb-0">{{ in_stock_count }}</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Charts and Detailed Views -->
-<div class="row g-4 section-spacing">
-    <!-- Sales Chart -->
+<!-- Middle Row: 7-Day Chart & Performance Breakdown -->
+<div class="row g-4 mb-4">
+    <!-- Chart Column -->
     <div class="col-lg-8">
-        <div class="card chart-card border-0">
-            <div class="card-header p-3 d-flex justify-content-between align-items-center">
-                <h6 class="fw-semibold mb-0">📊 7-Day Sales Trend</h6>
-                <small class="text-muted">Last week</small>
-            </div>
-            <div class="card-body">
-                <canvas id="salesChart" height="300"></canvas>
-            </div>
-        </div>
-    </div>
-
-    <!-- Quick Stats -->
-    <div class="col-lg-4">
-        <div class="card quick-stats-card border-0">
-            <div class="card-header p-3">
-                <h6 class="fw-semibold mb-0">⚡ Quick Stats</h6>
-            </div>
-            <div class="card-body">
-                <div class="mb-4">
-                    <div class="d-flex justify-content-between mb-2">
-                        <small class="text-muted fw-600">Daily Average</small>
-                        <strong class="text-primary">KES {{ daily_average }}</strong>
-                    </div>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: {% if daily_average_percent %}{{ daily_average_percent }}{% else %}0{% endif %}%;" aria-valuenow="{% if daily_average_percent %}{{ daily_average_percent }}{% else %}0{% endif %}" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                </div>
-
-                <div class="mb-4">
-                    <div class="d-flex justify-content-between mb-2">
-                        <small class="text-muted fw-600">Stock Health</small>
-                        <strong class="text-success">{% if stock_health_percent %}{{ stock_health_percent }}{% else %}0{% endif %}%</strong>
-                    </div>
-                    <div class="progress">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: {% if stock_health_percent %}{{ stock_health_percent }}{% else %}0{% endif %}%;" aria-valuenow="{% if stock_health_percent %}{{ stock_health_percent }}{% else %}0{% endif %}" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <small class="text-muted mt-1 d-block">{{ in_stock_count }} of {{ products.count }} items available</small>
-                </div>
-
-                <hr class="my-3">
-
+        <div class="sb-card h-100">
+            <div class="sb-card-header">
                 <div>
-                    <h6 class="small fw-semibold mb-3">💹 Performance</h6>
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <small class="text-muted">Best Period</small>
-                        <strong class="stat-badge">KES {{ total_week }}</strong>
+                    <h2 class="sb-card-title">7-Day Sales Volume</h2>
+                    <span class="text-muted small">Daily revenue generated across the past week</span>
+                </div>
+                <span class="badge bg-light text-dark border">KES Currency</span>
+            </div>
+            <div class="sb-card-body">
+                <div style="position: relative; height: 260px; width: 100%;">
+                    <canvas id="salesTrendChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inventory & Performance Health -->
+    <div class="col-lg-4">
+        <div class="sb-card h-100">
+            <div class="sb-card-header">
+                <h2 class="sb-card-title">Stock Summary</h2>
+                <a href="{% url 'product_list' %}" class="text-decoration-none small text-dark fw-semibold">View All →</a>
+            </div>
+            <div class="sb-card-body d-flex flex-column justify-content-between">
+                <div>
+                    <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+                        <span class="text-muted small">In Stock (&ge;10 units)</span>
+                        <span class="sb-badge sb-badge-in-stock tabular">{{ in_stock_count }} items</span>
                     </div>
+
+                    <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+                        <span class="text-muted small">Low Stock (&lt;10 units)</span>
+                        <span class="sb-badge sb-badge-low-stock tabular">{{ low_stock_count }} items</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+                        <span class="text-muted small">Out of Stock (0 units)</span>
+                        <span class="sb-badge sb-badge-out-of-stock tabular">{{ out_of_stock }} items</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-muted small">Average Sale Value</span>
+                        <strong class="tabular text-dark">KES {{ avg_sale_value }}</strong>
+                    </div>
+                </div>
+
+                <div class="p-3 bg-light border rounded">
+                    <div class="d-flex align-items-center justify-content-between mb-1">
+                        <span class="small fw-semibold text-dark">All-Time Recorded Sales</span>
+                        <span class="badge bg-dark text-white tabular">{{ all_time_transactions }} sales</span>
+                    </div>
+                    <div class="fs-5 fw-bold text-dark tabular">KES {{ total_all_time }}</div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Top Products and Recent Sales -->
-<div class="row g-4 section-spacing">
+<!-- Bottom Row: Top Selling Products & Recent Sales Feed -->
+<div class="row g-4">
+    <!-- Top Products -->
     <div class="col-lg-6">
-        <div class="card chart-card border-0">
-            <div class="card-header p-3">
-                <h6 class="fw-semibold mb-0">🏆 Top Selling Products</h6>
+        <div class="sb-card h-100">
+            <div class="sb-card-header">
+                <h2 class="sb-card-title">Top Products by Revenue</h2>
+                <span class="text-muted small">Most profitable inventory items</span>
             </div>
-            <div class="card-body">
+            <div class="sb-card-body p-0">
                 {% if top_products %}
-                <div class="list-group">
-                    {% for product in top_products %}
-                    <div class="list-group-item px-0 py-3 d-flex justify-content-between align-items-center">
-                        <div class="flex-grow-1">
-                            <p class="mb-1 fw-500">{{ product.product__name }}</p>
-                            <small class="text-muted">{{ product.total_sold }} unit{{ product.total_sold|pluralize }} sold</small>
-                        </div>
-                        <strong class="text-primary">KES {{ product.revenue|floatformat:0 }}</strong>
-                    </div>
-                    {% endfor %}
+                <div class="sb-table-responsive">
+                    <table class="sb-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th class="col-center">Units Sold</th>
+                                <th class="col-right">Total Revenue</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in top_products %}
+                            <tr>
+                                <td class="fw-semibold text-dark">{{ product.product__name }}</td>
+                                <td class="col-center tabular">{{ product.total_sold }}</td>
+                                <td class="col-right tabular fw-bold text-dark">KES {{ product.revenue|floatformat:0 }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
                 {% else %}
-                <p class="text-muted mb-0 text-center py-4">No sales data yet. Start recording sales to see trends!</p>
+                <div class="p-4 text-center text-muted small">
+                    <p class="mb-2">No top selling products logged yet.</p>
+                    <a href="{% url 'product_list' %}" class="sb-btn sb-btn-secondary sb-btn-sm">Record your first sale</a>
+                </div>
                 {% endif %}
             </div>
         </div>
     </div>
 
+    <!-- Recent Sales -->
     <div class="col-lg-6">
-        <div class="card chart-card border-0">
-            <div class="card-header p-3">
-                <h6 class="fw-semibold mb-0">📝 Recent Sales (Today)</h6>
+        <div class="sb-card h-100">
+            <div class="sb-card-header">
+                <h2 class="sb-card-title">Recent Transactions</h2>
+                <a href="{% url 'sales_history' %}" class="text-decoration-none small text-dark fw-semibold">Full Ledger →</a>
             </div>
-            <div class="card-body">
-                {% if sales_today %}
-                <div class="list-group">
-                    {% for sale in sales_today|slice:":5" %}
-                    <div class="list-group-item px-0 py-3 d-flex justify-content-between align-items-center">
-                        <div class="flex-grow-1">
-                            <p class="mb-1 fw-500">{{ sale.product.name }}</p>
-                            <small class="text-muted">{{ sale.created_at|date:"h:i A" }} • Qty: {{ sale.quantity_sold }}</small>
-                        </div>
-                        <strong class="text-success">KES {{ sale.total_price }}</strong>
-                    </div>
-                    {% endfor %}
+            <div class="sb-card-body p-0">
+                {% if recent_sales %}
+                <div class="sb-table-responsive">
+                    <table class="sb-table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Time</th>
+                                <th class="col-center">Qty</th>
+                                <th class="col-right">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for sale in recent_sales %}
+                            <tr>
+                                <td class="fw-semibold text-dark">{{ sale.product.name }}</td>
+                                <td class="text-muted small tabular">{{ sale.created_at|date:"M d, H:i" }}</td>
+                                <td class="col-center tabular">{{ sale.quantity_sold }}</td>
+                                <td class="col-right tabular fw-bold text-success">KES {{ sale.total_price }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
-                {% if sales_today.count > 5 %}
-                <div class="text-center mt-3 pt-2 border-top">
-                    <a href="{% url 'sales_history' %}" class="btn btn-sm btn-outline-primary">View All Transactions</a>
-                </div>
-                {% endif %}
                 {% else %}
-                <p class="text-muted mb-0 text-center py-4">No sales recorded today. <a href="{% url 'product_list' %}" class="text-primary fw-600">Record a sale →</a></p>
+                <div class="p-4 text-center text-muted small">
+                    <p class="mb-2">No transaction history recorded yet.</p>
+                    <a href="{% url 'product_create' %}" class="sb-btn sb-btn-secondary sb-btn-sm">Add an item to sell</a>
+                </div>
                 {% endif %}
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
 
-<!-- Chart.js Script -->
+{% block extra_scripts %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Prepare data for chart
-    var dailyData = JSON.parse('{{ daily_sales|escapejs }}');
-    var labels = Object.keys(dailyData);
-    var data = Object.values(dailyData);
+document.addEventListener("DOMContentLoaded", function() {
+    var rawData = JSON.parse('{{ daily_sales_json|escapejs }}');
+    var labels = rawData.map(function(item) { return item.day + ' (' + item.date + ')'; });
+    var values = rawData.map(function(item) { return item.total; });
 
-    // Handle case where all data is 0
-    var maxValue = Math.max(...data);
-    var yAxisMax = maxValue > 0 ? maxValue * 1.2 : 1000;
-
-    var ctx = document.getElementById('salesChart').getContext('2d');
-    var chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Daily Sales (KES)',
-                data: data,
-                fill: true,
-                backgroundColor: 'rgba(37, 99, 235, 0.08)',
-                borderColor: '#2563EB',
-                borderWidth: 3,
-                pointBackgroundColor: '#2563EB',
-                pointBorderColor: '#fff',
-                pointBorderWidth: 2,
-                pointRadius: 5,
-                pointHoverRadius: 7,
-                tension: 0.4,
-                segment: {
-                    borderColor: '#2563EB',
-                }
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            animation: {
-                duration: 1000,
-                easing: 'easeInOutQuart'
+    var canvas = document.getElementById('salesTrendChart');
+    if (canvas) {
+        var ctx = canvas.getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Revenue (KES)',
+                    data: values,
+                    backgroundColor: '#0f172a',
+                    hoverBackgroundColor: '#334155',
+                    borderRadius: 6,
+                    maxBarThickness: 36
+                }]
             },
-            plugins: {
-                legend: {
-                    display: true,
-                    labels: {
-                        font: { size: 12, family: "'Inter', sans-serif", weight: '500' },
-                        padding: 20,
-                        usePointStyle: true,
-                        pointStyle: 'circle'
-                    }
-                },
-                tooltip: {
-                    backgroundColor: 'rgba(0,0,0,0.8)',
-                    padding: 12,
-                    titleFont: { size: 13, weight: 'bold' },
-                    bodyFont: { size: 12 },
-                    borderColor: 'rgba(255,255,255,0.1)',
-                    borderWidth: 1,
-                    displayColors: true,
-                    callbacks: {
-                        label: function(context) {
-                            return 'KES ' + context.parsed.y.toLocaleString();
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#0f172a',
+                        titleFont: { size: 12, family: "'Inter', sans-serif" },
+                        bodyFont: { size: 13, family: "'Inter', sans-serif", weight: 'bold' },
+                        padding: 10,
+                        cornerRadius: 6,
+                        callbacks: {
+                            label: function(ctx) {
+                                return 'KES ' + ctx.raw.toLocaleString();
+                            }
                         }
                     }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    max: yAxisMax,
-                    ticks: {
-                        font: { size: 11, family: "'Inter', sans-serif" },
-                        callback: function(value) {
-                            return 'KES ' + value.toLocaleString();
-                        }
-                    },
-                    grid: {
-                        color: 'rgba(0,0,0,0.05)',
-                        drawBorder: false
-                    }
                 },
-                x: {
-                    ticks: {
-                        font: { size: 11, family: "'Inter', sans-serif" }
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { size: 11, family: "'Inter', sans-serif" }, color: '#64748b' }
                     },
-                    grid: {
-                        display: false,
-                        drawBorder: false
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#f1f5f9' },
+                        ticks: {
+                            font: { size: 11, family: "'Inter', sans-serif" },
+                            color: '#64748b',
+                            callback: function(v) { return 'KES ' + v.toLocaleString(); }
+                        }
                     }
                 }
             }
-        }
-    });
+        });
+    }
+});
 </script>
-
 {% endblock %}

@@ -1,55 +1,64 @@
-{% extends "core/base.html" %}
+{% extends "core/admin_base.html" %}
+
+{% block title %}Confirm Merchant Account Change — SmartBiz Admin{% endblock %}
+
 {% block content %}
+<div class="py-3" style="max-width: 480px; margin: 0 auto;">
+    <div class="mb-3">
+        <a href="{% url 'admin_users' %}" class="text-decoration-none text-muted small d-inline-flex align-items-center gap-1">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            Back to Merchant Accounts
+        </a>
+    </div>
 
-<div class="d-flex justify-content-center align-items-center" style="min-height: 60vh;">
-    <div class="card shadow-sm p-4" style="width: 420px;">
-        <h4 class="fw-semibold text-center mb-4">Confirm Action</h4>
+    <div class="sb-card">
+        <div class="sb-card-header">
+            <h1 class="h5 mb-0">Confirm Status Change</h1>
+            <span class="sb-badge {% if user.is_active %}sb-badge-in-stock{% else %}sb-badge-out-of-stock{% endif %}">
+                Current: {% if user.is_active %}Active{% else %}Inactive{% endif %}
+            </span>
+        </div>
 
-        {% if user %}
-        <div class="card bg-light border-0 mb-4">
-            <div class="card-body">
-                <p class="mb-0">
-                    <strong>User:</strong> {{ user.username }}<br>
-                    <strong>Email:</strong> {{ user.email }}
-                </p>
-                <hr class="my-2">
+        <div class="sb-card-body p-4">
+            <div class="p-3 bg-light border rounded mb-4">
+                <div class="d-flex justify-content-between py-1 border-bottom">
+                    <span class="text-muted small">Merchant</span>
+                    <strong class="text-dark">{{ user.username }}</strong>
+                </div>
+                <div class="d-flex justify-content-between py-1 border-bottom">
+                    <span class="text-muted small">Email</span>
+                    <span class="text-dark">{{ user.email|default:"None" }}</span>
+                </div>
+                <div class="d-flex justify-content-between py-1">
+                    <span class="text-muted small">New Action</span>
+                    {% if user.is_active %}
+                    <span class="text-danger fw-semibold">Deactivate Store Account</span>
+                    {% else %}
+                    <span class="text-success fw-semibold">Reactivate Store Account</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <p class="text-muted small mb-4">
                 {% if user.is_active %}
-                <p class="text-danger mb-0">This will <strong>deactivate</strong> the user account.</p>
+                Deactivating this merchant will prevent them from signing in or adding new sales until re-enabled.
                 {% else %}
-                <p class="text-success mb-0">This will <strong>activate</strong> the user account.</p>
+                Reactivating this merchant will restore their full dashboard access.
                 {% endif %}
-            </div>
-        </div>
-        {% endif %}
+            </p>
 
-        {% if subscription %}
-        <div class="card bg-light border-0 mb-4">
-            <div class="card-body">
-                <p class="mb-0">
-                    <strong>User:</strong> {{ subscription.user.username }}<br>
-                    <strong>Plan:</strong> {{ subscription.plan.name }}<br>
-                    <strong>End Date:</strong> {{ subscription.end_date|date:"M d, Y" }}
-                </p>
-                <hr class="my-2">
-                {% if subscription.is_active %}
-                <p class="text-danger mb-0">This will <strong>deactivate</strong> the subscription.</p>
-                {% else %}
-                <p class="text-success mb-0">This will <strong>reactivate</strong> the subscription.</p>
-                {% endif %}
-            </div>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="d-flex flex-column gap-2">
+                    <button type="submit" class="sb-btn {% if user.is_active %}sb-btn-danger{% else %}sb-btn-primary{% endif %} w-100">
+                        {% if user.is_active %}Confirm Account Deactivation{% else %}Confirm Account Reactivation{% endif %}
+                    </button>
+                    <a href="{% url 'admin_users' %}" class="sb-btn sb-btn-secondary text-center">
+                        Cancel
+                    </a>
+                </div>
+            </form>
         </div>
-        {% endif %}
-
-        <form method="POST" class="d-grid gap-2">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger">
-                {% if user and user.is_active %}Deactivate User{% elif user %}Activate User{% elif subscription and subscription.is_active %}Deactivate Subscription{% else %}Reactivate Subscription{% endif %}
-            </button>
-            <a href="{% if user %}{% url 'admin_users' %}{% else %}{% url 'admin_subscriptions' %}{% endif %}" class="btn btn-outline-secondary">
-                Cancel
-            </a>
-        </form>
     </div>
 </div>
-
 {% endblock %}

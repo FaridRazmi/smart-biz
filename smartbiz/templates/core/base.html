@@ -3,325 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SmartBiz - Sales Management for Small Businesses</title>
+    <title>{% block title %}SmartBiz — Sales & Inventory Ledger{% endblock %}</title>
 
-    <!-- Favicon -->
     {% load static %}
     <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon.svg' %}">
-    <link rel="apple-touch-icon" href="{% static 'images/favicon.svg' %}">
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Bootstrap -->
+    <!-- Bootstrap 5 for Grid & Utilities -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-
-    <style>
-        :root {
-            --primary-color: #2563EB;
-            --primary-dark: #1d4ed8;
-            --primary-light: #3b82f6;
-            --secondary-color: #0F172A;
-            --success-color: #10b981;
-            --danger-color: #ef4444;
-            --warning-color: #f59e0b;
-            --info-color: #06b6d4;
-        }
-
-        * {
-            font-family: 'Inter', sans-serif;
-        }
-        
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-        }
-
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #f0f2f5 100%);
-            color: #1f2937;
-            min-height: 100vh;
-        }
-
-        .sidebar {
-            height: 100vh;
-            background: #ffffff;
-            border-right: 1px solid #e5e7eb;
-            position: fixed;
-            top: 0;
-            left: 0;
-            padding-top: 70px;
-            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.04);
-        }
-
-        .sidebar a {
-            padding: 12px 20px;
-            display: block;
-            color: #6b7280;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .sidebar a:hover {
-            background-color: #f3f4f6;
-            color: #1f2937;
-            padding-left: 24px;
-        }
-
-        .sidebar-active {
-            background-color: #eff6ff;
-            color: var(--primary-color);
-            font-weight: 600;
-            border-left: 3px solid var(--primary-color);
-            padding-left: 17px;
-        }
-
-        .navbar {
-            background: #ffffff !important;
-            border-bottom: 2px solid var(--primary-color);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        }
-
-        .navbar-brand {
-            font-weight: 700 !important;
-            font-size: 1.3rem;
-            color: var(--primary-color) !important;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .navbar-brand img {
-            height: 32px;
-            width: auto;
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color) !important;
-            border-color: var(--primary-color) !important;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-dark) !important;
-            border-color: var(--primary-dark) !important;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-        }
-
-        .btn-outline-primary {
-            color: var(--primary-color);
-            border-color: var(--primary-color);
-            transition: all 0.3s ease;
-        }
-
-        .btn-outline-primary:hover {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
-        }
-
-        .card {
-            border: 1px solid #e5e7eb !important;
-            transition: all 0.3s ease;
-        }
-
-        .card:hover {
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
-            transform: translateY(-2px);
-        }
-
-        .content-wrapper {
-            margin-left: 230px;
-            padding: 30px;
-            padding-top: 100px;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .list-group-item {
-            border-color: #e5e7eb;
-            transition: all 0.2s ease;
-        }
-
-        .list-group-item:hover {
-            background-color: #f9fafb;
-        }
-
-        .badge {
-            font-weight: 600;
-            padding: 4px 10px;
-            border-radius: 6px;
-        }
-
-        .form-control, .form-select {
-            border-color: #e5e7eb;
-            transition: all 0.3s ease;
-        }
-
-        .form-control:focus, .form-select:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-
-        .btn-primary {
-            background: #3b82f6;
-            border: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            background: #2563eb;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-        }
-
-        .alert {
-            border: none;
-            border-radius: 8px;
-            animation: slideDown 0.3s ease;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Mobile responsive */
-        @media (max-width: 992px) {
-            .sidebar {
-                position: relative;
-                height: auto;
-                border-right: none;
-                padding-top: 0;
-            }
-            .content-wrapper {
-                margin-left: 0;
-            }
-        }
-    </style>
+    
+    <!-- SmartBiz Anti-Slop Custom Design System -->
+    <link rel="stylesheet" href="{% static 'css/smartbiz.css' %}">
+    
+    {% block extra_head %}{% endblock %}
 </head>
-
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
-        <div class="container-fluid">
-            <a class="navbar-brand fw-bold" href="{% url 'dashboard' %}">
-                <img src="{% static 'images/favicon.svg' %}" alt="SmartBiz" height="32">
-                SmartBiz
+    <div class="sb-shell">
+        {% if user.is_authenticated %}
+        <!-- Desktop Sidebar -->
+        <aside class="sb-sidebar">
+            <a href="{% url 'dashboard' %}" class="sb-sidebar-brand">
+                <div class="sb-brand-mark">SB</div>
+                <span class="sb-brand-title">SmartBiz</span>
+                {% if user.is_staff or user.is_superuser %}
+                <span class="sb-brand-badge">ADMIN</span>
+                {% endif %}
             </a>
-            
-            {% if user.is_authenticated %}
-            <!-- Mobile Menu Button -->
-            <button class="navbar-toggler d-lg-none me-2" type="button" data-bs-toggle="offcanvas"
-                data-bs-target="#mobileMenu">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            {% endif %}
 
-            <div class="collapse navbar-collapse justify-content-end d-none d-lg-flex" id="navbarNav">
-                {% if user.is_authenticated %}
-                <span class="me-3">{{ user.username }}</span>
-                <form method="POST" action="{% url 'logout' %}" style="display: inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-outline-primary btn-sm">Logout</button>
-                </form>
+            <div class="sb-sidebar-nav">
+                <span class="sb-nav-section-label">Operations</span>
+                <a href="{% url 'dashboard' %}" class="sb-nav-link {% if request.path == '/dashboard/' %}active{% endif %}">
+                    <span class="sb-nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+                    </span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="{% url 'product_list' %}" class="sb-nav-link {% if '/products/' in request.path and '/new/' not in request.path %}active{% endif %}">
+                    <span class="sb-nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg>
+                    </span>
+                    <span>Inventory</span>
+                </a>
+                <a href="{% url 'product_create' %}" class="sb-nav-link {% if '/products/new/' in request.path %}active{% endif %}">
+                    <span class="sb-nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                    </span>
+                    <span>Add Product</span>
+                </a>
+                <a href="{% url 'sales_history' %}" class="sb-nav-link {% if '/sales/history/' in request.path %}active{% endif %}">
+                    <span class="sb-nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20v-6M6 20V10M18 20V4"></path></svg>
+                    </span>
+                    <span>Sales Ledger</span>
+                </a>
+
+                {% if user.is_staff or user.is_superuser %}
+                <span class="sb-nav-section-label" style="margin-top: 1rem;">Management</span>
+                <a href="{% url 'admin_dashboard' %}" class="sb-nav-link {% if 'admin' in request.path %}active{% endif %}">
+                    <span class="sb-nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    </span>
+                    <span>Admin Panel</span>
+                </a>
                 {% endif %}
             </div>
-        </div>
-    </nav>
 
-    <!-- Desktop Sidebar -->
-    {% if user.is_authenticated %}
-    <div class="sidebar d-none d-lg-block">
-        <a href="{% url 'dashboard' %}" class="{% if '/dashboard' in request.path %}sidebar-active{% endif %}">
-            Dashboard
-        </a>
-        <a href="{% url 'product_list' %}" class="{% if 'products' in request.path and 'new' not in request.path %}sidebar-active{% endif %}">
-            Products
-        </a>
-        <a href="{% url 'product_create' %}" class="{% if 'new' in request.path %}sidebar-active{% endif %}">
-            Add Product
-        </a>
-        <a href="{% url 'sales_history' %}" class="{% if 'sales' in request.path %}sidebar-active{% endif %}">
-            Sales History
-        </a>
-        <a href="{% url 'subscription_status' %}" class="{% if 'subscription' in request.path and 'required' not in request.path and 'expired' not in request.path %}sidebar-active{% endif %}">
-            Subscription
-        </a>
-    </div>
-
-    <!-- Mobile Sidebar (Offcanvas) -->
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title">SmartBiz Menu</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
-        </div>
-        <div class="offcanvas-body p-0">
-            <div class="list-group list-group-flush">
-                <a href="{% url 'dashboard' %}" class="list-group-item list-group-item-action {% if '/dashboard' in request.path %}active{% endif %}" data-bs-dismiss="offcanvas">
-                    📊 Dashboard
-                </a>
-                <a href="{% url 'product_list' %}" class="list-group-item list-group-item-action {% if 'products' in request.path and 'new' not in request.path %}active{% endif %}" data-bs-dismiss="offcanvas">
-                    📦 Products
-                </a>
-                <a href="{% url 'product_create' %}" class="list-group-item list-group-item-action {% if 'new' in request.path %}active{% endif %}" data-bs-dismiss="offcanvas">
-                    ➕ Add Product
-                </a>
-                <a href="{% url 'sales_history' %}" class="list-group-item list-group-item-action {% if 'sales' in request.path %}active{% endif %}" data-bs-dismiss="offcanvas">
-                    📈 Sales History
-                </a>
-                <a href="{% url 'subscription_status' %}" class="list-group-item list-group-item-action {% if 'subscription' in request.path and 'required' not in request.path and 'expired' not in request.path %}active{% endif %}" data-bs-dismiss="offcanvas">
-                    🔒 Subscription
-                </a>
-                <hr class="my-0">
-                <form method="POST" action="{% url 'logout' %}" class="d-grid p-2">
+            <div class="sb-sidebar-footer">
+                <div class="sb-user-info">
+                    <div class="sb-user-name">{{ user.username }}</div>
+                    <div class="sb-user-role">Shop Manager</div>
+                </div>
+                <form method="POST" action="{% url 'logout' %}" class="m-0">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-outline-primary btn-sm">Logout</button>
+                    <button type="submit" class="sb-btn sb-btn-secondary sb-btn-sm" title="Log out" aria-label="Log out">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    </button>
                 </form>
             </div>
-        </div>
-    </div>
-    {% endif %}
+        </aside>
+        {% endif %}
 
-    <!-- Notifications -->
-    {% if notifications %}
-    <div class="notification-container" style="position: fixed; top: 80px; left: 250px; right: 0; z-index: 1000; padding: 15px; max-width: 500px;">
-        {% for notification in notifications %}
-        <div class="alert alert-{{ notification.type }} alert-dismissible fade show" role="alert">
-            {{ notification.message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-        {% endfor %}
-    </div>
-    {% endif %}
+        <!-- Main Wrapper -->
+        <main class="sb-main">
+            {% if user.is_authenticated %}
+            <!-- Topbar -->
+            <header class="sb-topbar">
+                <div class="sb-topbar-left">
+                    <a href="{% url 'dashboard' %}" class="d-lg-none text-decoration-none text-dark d-flex align-items-center gap-2">
+                        <div class="sb-brand-mark">SB</div>
+                        <span class="fw-bold fs-6">SmartBiz</span>
+                    </a>
+                    <span class="d-none d-lg-inline text-muted small">
+                        Store: <strong class="text-dark">{{ user.username }}'s Shop</strong>
+                    </span>
+                </div>
 
-    <!-- Main content -->
-    <div class="content-wrapper">
-        {% block content %}{% endblock %}
+                <div class="sb-topbar-right">
+                    <a href="{% url 'product_create' %}" class="sb-btn sb-btn-secondary sb-btn-sm">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        <span>New Product</span>
+                    </a>
+                    <a href="{% url 'product_list' %}" class="sb-btn sb-btn-primary sb-btn-sm">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                        <span>Record Sale</span>
+                    </a>
+                </div>
+            </header>
+            {% endif %}
+
+            <!-- Notification Alerts -->
+            <div class="sb-content">
+                {% if notifications %}
+                <div class="mb-4">
+                    {% for notification in notifications %}
+                    <div class="sb-alert sb-alert-{{ notification.type }}" role="alert">
+                        <div class="d-flex align-items-center gap-2">
+                            {% if notification.type == 'danger' %}
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                            {% else %}
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                            {% endif %}
+                            <span>{{ notification.message }}</span>
+                        </div>
+                        <a href="{% url 'product_list' %}?status=low" class="sb-btn sb-btn-secondary sb-btn-sm py-1 px-2" style="font-size: 0.75rem;">View Items</a>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% block content %}{% endblock %}
+            </div>
+        </main>
     </div>
+
+    {% if user.is_authenticated %}
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="sb-mobile-bottom-bar" aria-label="Mobile Navigation">
+        <a href="{% url 'dashboard' %}" class="sb-mobile-tab {% if request.path == '/dashboard/' %}active{% endif %}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+            <span>Overview</span>
+        </a>
+        <a href="{% url 'product_list' %}" class="sb-mobile-tab {% if '/products/' in request.path and '/new/' not in request.path %}active{% endif %}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path></svg>
+            <span>Stock</span>
+        </a>
+        <a href="{% url 'product_list' %}" class="sb-mobile-tab text-dark fw-bold">
+            <div style="width: 32px; height: 32px; border-radius: 8px; background: #0f172a; color: #fff; display: flex; align-items: center; justify-content: center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </div>
+            <span style="color: #0f172a;">Sale</span>
+        </a>
+        <a href="{% url 'sales_history' %}" class="sb-mobile-tab {% if '/sales/history/' in request.path %}active{% endif %}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20v-6M6 20V10M18 20V4"></path></svg>
+            <span>Ledger</span>
+        </a>
+        <a href="{% url 'product_create' %}" class="sb-mobile-tab {% if '/products/new/' in request.path %}active{% endif %}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+            <span>Add Item</span>
+        </a>
+    </nav>
+    {% endif %}
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_scripts %}{% endblock %}
 </body>
 </html>

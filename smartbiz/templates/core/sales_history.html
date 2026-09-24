@@ -1,285 +1,116 @@
 {% extends "core/base.html" %}
+
+{% block title %}Sales Ledger & History — SmartBiz{% endblock %}
+
 {% block content %}
-
-<style>
-    @keyframes slideInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .page-header {
-        animation: slideInUp 0.6s ease-out;
-        margin-bottom: 2rem;
-    }
-
-    .page-header h3 {
-        font-size: 1.75rem;
-        font-weight: 700;
-    }
-
-    .filter-section {
-        animation: slideInUp 0.6s ease-out 0.1s;
-        animation-fill-mode: both;
-        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
-        padding: 1.5rem;
-        border-radius: 10px;
-        margin-bottom: 2rem;
-        border: 1px solid #e5e7eb;
-    }
-
-    .filter-section .form-label {
-        font-weight: 600;
-        font-size: 0.9rem;
-        color: #374151;
-    }
-
-    .filter-section .form-control,
-    .filter-section .form-select {
-        border-radius: 8px;
-        border: 1px solid #e5e7eb;
-        transition: all 0.3s ease;
-    }
-
-    .filter-section .form-control:focus,
-    .filter-section .form-select:focus {
-        border-color: #2563EB;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-    }
-
-    .filter-btn {
-        padding: 0.6rem 1.5rem;
-        font-weight: 600;
-        border-radius: 8px;
-        border: none;
-        transition: all 0.3s ease;
-    }
-
-    .sales-table {
-        animation: slideInUp 0.6s ease-out 0.2s;
-        animation-fill-mode: both;
-    }
-
-    .card {
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-        border: none !important;
-    }
-
-    .table {
-        margin-bottom: 0;
-    }
-
-    .table thead {
-        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
-    }
-
-    .table th {
-        font-weight: 600;
-        color: #374151;
-        border-bottom: 2px solid #e5e7eb;
-        padding: 1rem !important;
-    }
-
-    .table td {
-        padding: 1rem !important;
-        vertical-align: middle;
-        border-bottom: 1px solid #f3f4f6;
-    }
-
-    .table tbody tr {
-        transition: all 0.3s ease;
-    }
-
-    .table tbody tr:hover {
-        background-color: #f9fafb;
-        transform: scale(1.01);
-    }
-
-    .date-badge {
-        display: inline-block;
-        padding: 0.35rem 0.75rem;
-        background: #eff6ff;
-        color: #1e40af;
-        border-radius: 6px;
-        font-size: 0.85rem;
-        font-weight: 600;
-    }
-
-    .product-name {
-        font-weight: 600;
-        color: #1f2937;
-    }
-
-    .quantity-badge {
-        display: inline-block;
-        padding: 0.35rem 0.75rem;
-        background: #fef3c7;
-        color: #92400e;
-        border-radius: 6px;
-        font-size: 0.85rem;
-        font-weight: 600;
-    }
-
-    .price-badge {
-        font-weight: 600;
-        color: #10b981;
-        font-size: 1.05rem;
-    }
-
-    .summary-cards {
-        animation: slideInUp 0.6s ease-out 0.15s;
-        animation-fill-mode: both;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1.5rem;
-        margin-bottom: 2rem;
-    }
-
-    .summary-card {
-        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
-        padding: 1.5rem;
-        border-radius: 10px;
-        border-left: 4px solid #2563EB;
-    }
-
-    .summary-card.total {
-        border-left-color: #10b981;
-    }
-
-    .summary-card.average {
-        border-left-color: #06b6d4;
-    }
-
-    .summary-card.count {
-        border-left-color: #f59e0b;
-    }
-
-    .summary-card-label {
-        font-size: 0.85rem;
-        color: #6b7280;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 0.5rem;
-    }
-
-    .summary-card-value {
-        font-size: 1.75rem;
-        font-weight: 700;
-        color: #1f2937;
-    }
-
-    .empty-state {
-        animation: slideInUp 0.6s ease-out 0.3s;
-        animation-fill-mode: both;
-        text-align: center;
-        padding: 3rem 2rem;
-    }
-
-    .empty-state-icon {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-    }
-
-    .empty-state-title {
-        font-size: 1.25rem;
-        font-weight: 600;
-        color: #1f2937;
-        margin-bottom: 0.5rem;
-    }
-
-    .empty-state-text {
-        color: #6b7280;
-        margin-bottom: 1.5rem;
-    }
-
-    @media (max-width: 768px) {
-        .filter-section {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
-        }
-
-        .summary-cards {
-            grid-template-columns: 1fr;
-        }
-    }
-</style>
-
-<div class="page-header">
-    <h3 class="fw-semibold mb-1">Sales History</h3>
-    <p class="text-muted small">Track all your sales transactions and analyze your business performance</p>
-</div>
-
-<!-- Summary Cards -->
-{% if sales %}
-<div class="summary-cards">
-    <div class="summary-card total">
-        <div class="summary-card-label">Total Revenue</div>
-        <div class="summary-card-value">KES {{ total_revenue|default:"0" }}</div>
+<!-- Header -->
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+        <h1 class="h3 mb-1">Sales Transaction Ledger</h1>
+        <p class="text-muted small mb-0">Complete historical record of customer transactions and cash collected.</p>
     </div>
-    <div class="summary-card average">
-        <div class="summary-card-label">Average Sale</div>
-        <div class="summary-card-value">KES {{ average_sale|default:"0" }}</div>
-    </div>
-    <div class="summary-card count">
-        <div class="summary-card-label">Total Transactions</div>
-        <div class="summary-card-value">{{ sales.count }}</div>
-    </div>
-</div>
-{% endif %}
-
-<!-- Sales Table -->
-<div class="sales-table card">
-    <div class="table-responsive">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Date & Time</th>
-                    <th>Product</th>
-                    <th>Quantity Sold</th>
-                    <th>Total Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for sale in sales %}
-                <tr>
-                    <td>
-                        <span class="date-badge">
-                            {{ sale.created_at|date:"M d, h:i A" }}
-                        </span>
-                    </td>
-                    <td>
-                        <span class="product-name">{{ sale.product.name }}</span>
-                    </td>
-                    <td>
-                        <span class="quantity-badge">{{ sale.quantity_sold }} unit{{ sale.quantity_sold|pluralize }}</span>
-                    </td>
-                    <td>
-                        <span class="price-badge">KES {{ sale.total_price }}</span>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="4">
-                        <div class="empty-state">
-                            <div class="empty-state-icon">📉</div>
-                            <div class="empty-state-title">No Sales Yet</div>
-                            <p class="empty-state-text">Start recording sales to see them here and track your business performance</p>
-                            <a href="{% url 'product_list' %}" class="btn btn-primary">Go to Products</a>
-                        </div>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="d-flex align-items-center gap-2">
+        <button type="button" onclick="window.print()" class="sb-btn sb-btn-secondary d-none d-sm-inline-flex">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            <span>Print Ledger</span>
+        </button>
+        <a href="{% url 'product_list' %}" class="sb-btn sb-btn-primary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+            <span>New Sale</span>
+        </a>
     </div>
 </div>
 
+<!-- Ledger Summary Tiles -->
+<div class="row g-3 mb-4">
+    <div class="col-sm-4">
+        <div class="sb-stat-card p-3">
+            <span class="sb-stat-label">Total Revenue Collected</span>
+            <div class="sb-stat-value tabular text-success fs-4">KES {{ total_sales_value|default:"0" }}</div>
+            <span class="sb-stat-meta positive">Gross intake</span>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="sb-stat-card p-3">
+            <span class="sb-stat-label">Total Inventory Units Sold</span>
+            <div class="sb-stat-value tabular fs-4">{{ total_units_sold|default:"0" }} Units</div>
+            <span class="sb-stat-meta">Items processed</span>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="sb-stat-card p-3">
+            <span class="sb-stat-label">Total Transactions</span>
+            <div class="sb-stat-value tabular fs-4">{{ transaction_count }} Sales</div>
+            <span class="sb-stat-meta">Completed orders</span>
+        </div>
+    </div>
+</div>
+
+<!-- Ledger Table Card -->
+<div class="sb-card">
+    <div class="sb-card-header">
+        <h2 class="sb-card-title">Completed Transactions Log</h2>
+        <span class="badge bg-light text-dark border tabular">{{ sales.count }} records</span>
+    </div>
+
+    <div class="sb-card-body p-0">
+        {% if sales %}
+        <div class="sb-table-responsive">
+            <table class="sb-table">
+                <thead>
+                    <tr>
+                        <th>Receipt #</th>
+                        <th>Date & Time</th>
+                        <th>Product Item</th>
+                        <th class="col-right">Unit Price</th>
+                        <th class="col-center">Quantity</th>
+                        <th class="col-right">Total Amount</th>
+                        <th class="col-center">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sale in sales %}
+                    <tr>
+                        <td class="tabular fw-bold text-dark">
+                            #SL-{{ sale.id }}
+                        </td>
+                        <td class="text-muted tabular small">
+                            {{ sale.created_at|date:"Y-m-d H:i" }}
+                        </td>
+                        <td>
+                            <span class="fw-semibold text-dark">{{ sale.product.name }}</span>
+                        </td>
+                        <td class="col-right tabular text-muted">
+                            KES {{ sale.product.selling_price }}
+                        </td>
+                        <td class="col-center tabular fw-semibold text-dark">
+                            {{ sale.quantity_sold }}
+                        </td>
+                        <td class="col-right tabular fw-bold text-dark fs-6">
+                            KES {{ sale.total_price }}
+                        </td>
+                        <td class="col-center">
+                            <span class="sb-badge sb-badge-in-stock">
+                                Paid
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="p-5 text-center text-muted">
+            <div class="mb-3">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-muted"><path d="M12 20v-6M6 20V10M18 20V4"></path></svg>
+            </div>
+            <h3 class="h5 text-dark mb-1">No sales records found</h3>
+            <p class="small text-muted mb-3">You haven't recorded any customer transactions yet.</p>
+            <a href="{% url 'product_list' %}" class="sb-btn sb-btn-primary sb-btn-sm">
+                Go to Inventory & Record Sale
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
